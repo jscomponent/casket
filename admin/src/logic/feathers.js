@@ -2,9 +2,12 @@ import feathers from '@feathersjs/feathers'
 import socketio from '@feathersjs/socketio-client'
 import auth from '@feathersjs/authentication-client'
 import io from 'socket.io-client'
-import { server } from '../../package.json'
+import { host } from '../../../config/default.json'
 
-let socket = io(server)
+let socket = io(host, {
+    transports: ['websocket'],
+    upgrade: false
+})
 let $io = feathers()
 $io.configure(socketio(socket))
 $io.configure(auth())

@@ -36,11 +36,13 @@ export class Settings {
       // eslint-disable-next-line no-empty
       try { env = fs.readFileSync(path.resolve('./.env'), { encoding: 'utf8' }) } catch (e) {}
       let obj = dotenv.parse(env)
-      process.env.mongodb = obj['mongodb'] = data.mongodb
-      process.env.lang = obj['lang'] = 'en, no'
+      obj['mongodb'] = data.mongodb
+      obj['lang'] = 'en, no'
+      obj['NODE_ENV'] = 'production'
       let str = ''
       Object.keys(obj).forEach(key => {
-        str += key + ' = ' + process.env[key] + '\n'
+        process.env[key] = obj[key]
+        str += key + ' = ' + obj[key] + '\n'
       })
       fs.writeFileSync(path.resolve('./.env'), str, { encoding: 'utf8', flag: 'w' })
     } catch(e) {
