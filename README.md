@@ -1,28 +1,52 @@
-# casket
+# Casket CMS
 
-> Feathers CMS
+> Casket Content Management System - Built on [feathers](https://feathersjs.com)
 
-## About
+## Motivation
 
-This project uses [Feathers](http://feathersjs.com). An open source web framework for building modern real-time applications.
+Imagin having a real-time server up and running in no time with no limitations, all for free 😵‍💫
+In the future a replacement for firebase, strapi and other commercial services with hidden fees ..
 
 ## Getting Started
 
-Getting up and running is as easy as 1, 2, 3.
+Warning - This project is currently in an experimental state!
 
-1. Make sure you have [NodeJS](https://nodejs.org/) and [npm](https://www.npmjs.com/) installed.
-2. Install your dependencies
-
-    ```
-    cd path/to/casket
-    npm install
-    ```
-
-3. Start your app
+1. Make sure you have git, [NodeJS](https://nodejs.org/) and [npm](https://www.npmjs.com/) installed.
+2. Install pm2
 
     ```
-    npm start
+    npm i -g pm2
     ```
+    
+3. Clone this repo and update your host url
+
+    ```
+    git clone https://github.com/vueux/casket .
+    nano config/default # replace host with your ip or website domain
+    ```
+    
+4. Install dependencies and run server
+
+    ```
+    npm run start
+    ```
+    
+5. Go to your host url in a browser to start the installation process!
+
+## Roadmap
+
+[x] - Rest API (Comes with feathers)
+[x] - Socket API (Comes with feathers)
+[x] - User authentication (Comes with feathers)
+[x] - Roles management (Comes with feathers)
+[x] - Dynamic services (Stored in database)
+[x] - Stateless (Using MongoDB adapter for socket connections and uploads in the future)
+[x] - Clustering (Run on multiple cores)
+[x] - Zero downtime (Using pm2 with combination of dynamic services)
+[ ] - https with let's encrypt
+[ ] - Graphical design
+[ ] - Media upload
+[ ] - Documentation
 
 ## Testing
 
