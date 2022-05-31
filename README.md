@@ -28,7 +28,7 @@ Where not there yet, but it is surely the right time to get started. 💪🏽
 
     ```
     git clone https://github.com/vueux/casket .
-    nano config/default # replace host with your ip or website domain
+    nano .env # host = https://example.com
     ```
     
 4. Install dependencies and run server
@@ -49,6 +49,7 @@ Where not there yet, but it is surely the right time to get started. 💪🏽
 - [x] Stateless (Using MongoDB adapter for socket connections and uploads in the future)
 - [x] Clustering (Run on multiple cores)
 - [x] Zero downtime (Using pm2 with combination of dynamic services)
+- [ ] Support extending class for dynamic services
 - [ ] Graphical design
 - [ ] Media upload (use munter?)
 - [ ] Documentation
