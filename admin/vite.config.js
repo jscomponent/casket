@@ -1,6 +1,12 @@
 import { fileURLToPath, URL } from 'url'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
+import dotenv from '../node_modules/dotenv'
+import { host, port } from '../config/default.json'
+
+const PORT = port === 80 ? '' : ':' + port
+
+dotenv.config({ path: `../.env` })
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -13,6 +19,8 @@ export default defineConfig({
     extensions: ['.vue', '.tsx', '.ts', '.mjs', '.js', '.jsx', '.json', '.wasm']
   },
   define: {
-    'process.env': {}
+    'process.env': {
+      host: process.env.host || (host + PORT)
+    }
   }
 })

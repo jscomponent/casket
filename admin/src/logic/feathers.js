@@ -2,9 +2,8 @@ import feathers from '@feathersjs/feathers'
 import socketio from '@feathersjs/socketio-client'
 import auth from '@feathersjs/authentication-client'
 import io from 'socket.io-client'
-import { host } from '../../../config/default.json'
 
-let socket = io(host, {
+let socket = io( process.env.host, {
     transports: ['websocket'],
     upgrade: false
 })

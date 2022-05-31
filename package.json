@@ -28,7 +28,7 @@
     "test": "npm run lint && NODE_OPTIONS=--experimental-vm-modules npm run jest",
     "lint": "eslint src/. test/. --config .eslintrc.json --fix",
     "dev": "nodemon --ignore admin/ src/",
-    "start": "npm run build && pm2 start src/index.js -n casket",
+    "start": "npm run build && pm2 delete casket && pm2 start src/index.js -n casket -f",
     "jest": "jest --forceExit",
     "build": "npm i && cd admin && npm i && npm run build"
   },
