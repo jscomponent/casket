@@ -43,7 +43,6 @@ Warning - This project is currently in an experimental state!
 - [x] Stateless (Using MongoDB adapter for socket connections and uploads in the future)
 - [x] Clustering (Run on multiple cores)
 - [x] Zero downtime (Using pm2 with combination of dynamic services)
-- [ ] https with let's encrypt
 - [ ] Graphical design
 - [ ] Media upload
 - [ ] Documentation
