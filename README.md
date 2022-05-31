@@ -1,6 +1,6 @@
 # Casket CMS
 
-> Casket Content Management System - Built on [feathers](https://feathersjs.com)
+> Casket Content Management System - Built on [feathers](https://feathersjs.com) using MongoDB with Mongoose 🔥
 
 ## Motivation
 
@@ -9,7 +9,7 @@ In the future perhaps a replacement for firebase, strapi and other commercial se
 
 ## Getting Started
 
-Warning - This project is currently in an experimental state!
+🆘 Warning - This project is currently in an experimental state! 🛰
 
 1. Make sure you have git, [NodeJS](https://nodejs.org/) and [npm](https://www.npmjs.com/) installed.
 2. Install pm2
