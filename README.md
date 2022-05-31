@@ -1,11 +1,16 @@
 # Casket CMS
 
-> Casket Content Management System - Built on [FeathersJS](https://feathersjs.com) using [MongoDB](https://mongodb.com) with [Mongoose](https://mongoosejs.com) 🔥
+> Casket Content Management System - Built on [FeathersJS](https://feathersjs.com) using [MongoDB](https://mongodb.com) with [Mongoose](https://mongoosejs.com) and [Socket.IO](https://socket.io) 🔥
 
 ## Motivation
 
-Imagin having an auto scaling real-time server up and running in no time with no limitations, all for free 😵‍💫
-In the future perhaps a replacement for systems such as firebase & strapi?
+PHP just can't take up the fight against NodeJS anymore, as realtime libraries and other awesome NodeJS packages are spreading around on the internet.
+And coming from a world where WordPress & Laravel have been there for decades, NodeJS is struggling to fill this holes.
+Imagin having an auto scaled real-time CMS up and running in no time with no limitations, all for free written in NodeJS without writing any code. 😵‍💫💥
+
+In the future perhaps a replacement for systems such as firebase, strapi & WordPress?
+
+Where not there yet, but it is surely the right time to get started. 💪🏽
 
 ## Getting Started
 
@@ -44,7 +49,7 @@ In the future perhaps a replacement for systems such as firebase & strapi?
 - [x] Clustering (Run on multiple cores)
 - [x] Zero downtime (Using pm2 with combination of dynamic services)
 - [ ] Graphical design
-- [ ] Media upload
+- [ ] Media upload (use munter?)
 - [ ] Documentation
 
 ## Testing
