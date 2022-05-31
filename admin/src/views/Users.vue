@@ -1,0 +1,107 @@
+<template>
+  <div>
+    <h2>Users</h2>
+    <div>
+      <label>Email</label>
+      <input v-model="email"/>
+    </div>
+    <div>
+      <label>Password</label>
+      <input v-model="password" type="password"/>
+    </div>
+    <div>
+      <label>Permission</label>
+      <input v-model="permission"/>
+    </div>
+    <button @click="create({email, password, permissions: [permission]})">Create</button>
+    <button @click="clear">Clear</button>
+    <button @click="list">List</button>
+    <button @click="page--, list()">Prev page</button>
+    <span>Page {{page}}</span>
+    <button @click="page++, list()">Next page</button>
+
+    <label>Search</label>
+    <input v-model="search">
+
+    <table>
+      <tr>
+        <th>ID</th>
+        <th>Email</th>
+        <th>Permission</th>
+        <th>Created</th>
+        <th>Updated</th>
+        <th>Actions</th>
+      </tr>
+      <tr v-for="user in users" :key="user._id">
+        <td>{{user._id}}</td>
+        <td><input v-model="user.email"></td>
+        <td>{{user.permissions.join(' ')}}</td>
+        <td>{{user.createdAt}}</td>
+        <td>{{user.updatedAt}}</td>
+        <td><button @click="save(user)">Save</button></td>
+        <td><button @click="remove(user)">Remove</button></td>
+      </tr>
+    </table>
+  </div>
+</template>
+
+<script>
+export default {
+  inject: ['io'], 
+  data: () => ({
+    email: '',
+    password: '',
+    permission: '',
+    response: null,
+    search: '',
+    limit: 25,
+    page: 1
+  }),
+  computed: {
+    users() {
+      return this.response?.data || []
+    }
+  },
+  created() {
+    this.list()
+  },
+  methods: {
+    async create(obj) {
+      await this.io.service('users').create(obj)
+      this.clear()
+      this.list()
+    },
+    async list() {
+      let response = await this.io.service('users').find({
+        query: {
+          email: { $search: this.search },
+          $limit: this.limit,
+          $skip: (this.page - 1) * this.limit,
+          $sort: {
+            createdAt: -1
+          }
+        }
+      })
+      this.response = response
+    },
+    async save(user) {
+      await this.io.service('users').patch(user._id, {
+        email: user.email
+      })
+      this.list()
+    },
+    async remove(user) {
+      await this.io.service('users').remove(user._id)
+      this.list()
+    },
+    clear() {
+      this.email = ''
+      this.password = ''
+      this.permission = ''
+    }
+  }
+}
+</script>
+
+<style scoped>
+</style>

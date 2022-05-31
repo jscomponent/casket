@@ -1,0 +1,2 @@
+import{_ as a,o as s,c as u,a as t,t as l,b as n}from"./index.4de172e9.js";const c={data:()=>({}),computed:{user(){return JSON.parse(localStorage.getItem("user"))}},methods:{logout(){console.log("logout"),this.$router.push("/logout")}}},d=n(" Dashboard ");function g(p,o,_,i,m,e){return s(),u("div",null,[d,t("pre",null,"      "+l(e.user.user.email)+`
+    `,1),t("button",{onClick:o[0]||(o[0]=(...r)=>e.logout&&e.logout(...r))},"Logout")])}var h=a(c,[["render",g]]);export{h as default};
