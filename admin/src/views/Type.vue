@@ -102,6 +102,7 @@ export default {
     async list() {
       let response = await this.io.service('types/any').find({
         query: {
+          slug: this.type,
           $limit: this.limit,
           $skip: (this.page - 1) * this.limit,
           $sort: {
