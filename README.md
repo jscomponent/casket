@@ -5,7 +5,7 @@
 ## Motivation
 
 Imagin having an autoscaling real-time server up and running in no time with no limitations, all for free 😵‍💫
-In the future a replacement for firebase, strapi and other commercial services with hidden fees ..
+In the future perhaps a replacement for firebase, strapi and other commercial services without hidden fees ..
 
 ## Getting Started
 
