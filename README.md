@@ -1,6 +1,6 @@
 # Casket CMS
 
-> Casket Content Management System - Built on [feathers](https://feathersjs.com) using MongoDB with Mongoose 🔥
+> Casket Content Management System - Built on [FeathersJS](https://feathersjs.com) using [MongoDB](https://mongodb.com) with [Mongoose](https://mongoosejs.com) 🔥
 
 ## Motivation
 
