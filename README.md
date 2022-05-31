@@ -4,7 +4,7 @@
 
 ## Motivation
 
-Imagin having a real-time server up and running in no time with no limitations, all for free 😵‍💫
+Imagin having an autoscaling real-time server up and running in no time with no limitations, all for free 😵‍💫
 In the future a replacement for firebase, strapi and other commercial services with hidden fees ..
 
 ## Getting Started
@@ -35,18 +35,18 @@ Warning - This project is currently in an experimental state!
 
 ## Roadmap
 
-[x] - Rest API (Comes with feathers)
-[x] - Socket API (Comes with feathers)
-[x] - User authentication (Comes with feathers)
-[x] - Roles management (Comes with feathers)
-[x] - Dynamic services (Stored in database)
-[x] - Stateless (Using MongoDB adapter for socket connections and uploads in the future)
-[x] - Clustering (Run on multiple cores)
-[x] - Zero downtime (Using pm2 with combination of dynamic services)
-[ ] - https with let's encrypt
-[ ] - Graphical design
-[ ] - Media upload
-[ ] - Documentation
+- [x] Rest API (Comes with feathers)
+- [x] Socket API (Comes with feathers)
+- [x] User authentication (Comes with feathers)
+- [x] Roles management (Comes with feathers)
+- [x] Dynamic services (Stored in database)
+- [x] Stateless (Using MongoDB adapter for socket connections and uploads in the future)
+- [x] Clustering (Run on multiple cores)
+- [x] Zero downtime (Using pm2 with combination of dynamic services)
+- [ ] https with let's encrypt
+- [ ] Graphical design
+- [ ] Media upload
+- [ ] Documentation
 
 ## Testing
 
