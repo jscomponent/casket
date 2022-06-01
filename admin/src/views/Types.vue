@@ -74,6 +74,7 @@ export default {
   data: () => ({
     title: '',
     slug: '',
+    status: '',
     fields: '',
     roles: '',
     owner: '',
@@ -94,6 +95,8 @@ export default {
     async create(obj) {
       obj.fields = obj.fields ? JSON.parse(obj.fields) : {}
       obj.roles = obj.roles ? JSON.parse(obj.roles) : {}
+      let byteArray = new TextEncoder().encode('Hello from casket!')
+      obj.instance = byteArray.buffer
       await this.io.service('types/any').create(obj)
       this.clear()
       this.list()
@@ -109,6 +112,11 @@ export default {
           }
         }
       })
+
+      let buffer = Object.values(response.data[0].instance)
+      let array = new Uint8Array(buffer)
+      let parsed = new TextDecoder().decode(array)
+      console.log('results', parsed)
       response.data = response.data.map(t => {
         if (t.fields) t.fields = JSON.stringify(t.fields)
         if (t.roles) t.roles = JSON.stringify(t.roles)

@@ -7,6 +7,7 @@ export default app => {
       slug: { type: String, unique: true, lowercase: true },
       status: { type: String }, // published, draft
       fields: { type: Object },
+      instance: { type: Buffer },
       roles: { type: Object },
       owner: { type: String }
     },
