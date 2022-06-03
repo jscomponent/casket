@@ -5,8 +5,6 @@ import * as feathersAuthentication from '@feathersjs/authentication'
 import * as cmn from 'feathers-hooks-common'
 import checkPermissions from 'feathers-permissions'
 import { setField } from 'feathers-authentication-hooks'
-import fs from 'fs'
-import path from 'path'
 
 const { authenticate } = feathersAuthentication.hooks
 const { iff } = cmn.default
@@ -17,16 +15,14 @@ export default async (app, type) => {
     Model: createModel(app, type),
     paginate: app.get('paginate')
   }
+  let instance = type.instance.toString('base64')
   try {
-    let instance = type.instance.toString()
     let service = app.service('/types/' + type.slug)
     Object.assign(service.__hooks, { before: {}, after: {}, error: {} })
     if (instance) {
-      try { fs.mkdirSync(path.resolve('./temp')) } catch(e) {}
-      await fs.promises.writeFile('./temp/module.js', instance, { encoding: 'utf8', flag: 'w' })
       try {
-        let { CustomService } = await import('../temp/module.js')
-        service.assign(new CustomService())
+        const { Entity } = await import(`data:text/javascript;base64,${instance}`)
+        service.assign(new Entity())
       } catch(e) {
         console.log(e)
         service.assign(new TypeClean())
@@ -44,9 +40,18 @@ export default async (app, type) => {
       defaultLanguage: 'en'
     })
   } catch(e) {
+
     app.use('/types/' + type.slug, new Type(options, app))
     const service = app.service('types/' + type.slug)
     service.hooks(hooks(type))
+    if (instance) {
+      try {
+        const { Entity } = await import(`data:text/javascript;base64,${instance}`)
+        service.assign(new Entity())
+      } catch(e) {
+        console.log(e)
+      }
+    }
   }
 }
 
@@ -177,9 +182,11 @@ class Type extends Service {
 
 class TypeClean {
 
-  async find(...args) {
-    console.log('second find class', this.path)
-    return this.parent.find(...args)
-  }
+  async get(...args) { return this.parent.get(...args) }
+  async find(...args) { return this.parent.find(...args) }
+  async create(...args) { return this.parent.create(...args) }
+  async update(...args) { return this.parent.update(...args) }
+  async patch(...args) { return this.parent.patch(...args) }
+  async remove(...args) { return this.parent.remove(...args) }
 
 }
