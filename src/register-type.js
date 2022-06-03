@@ -5,6 +5,8 @@ import * as feathersAuthentication from '@feathersjs/authentication'
 import * as cmn from 'feathers-hooks-common'
 import checkPermissions from 'feathers-permissions'
 import { setField } from 'feathers-authentication-hooks'
+import fs from 'fs'
+import path from 'path'
 
 const { authenticate } = feathersAuthentication.hooks
 const { iff } = cmn.default
@@ -15,9 +17,37 @@ export default async (app, type) => {
     Model: createModel(app, type),
     paginate: app.get('paginate')
   }
-  app.use('/types/' + type.slug, new Type(options, app))
-  const service = app.service('types/' + type.slug)
-  service.hooks(hooks(type))
+  try {
+    let instance = type.instance.toString()
+    let service = app.service('/types/' + type.slug)
+    Object.assign(service.__hooks, { before: {}, after: {}, error: {} })
+    if (instance) {
+      try { fs.mkdirSync(path.resolve('./temp')) } catch(e) {}
+      await fs.promises.writeFile('./temp/module.js', instance, { encoding: 'utf8', flag: 'w' })
+      try {
+        let { CustomService } = await import('../temp/module.js')
+        service.assign(new CustomService())
+      } catch(e) {
+        console.log(e)
+        service.assign(new TypeClean())
+      }
+    } else {
+      service.assign(new TypeClean())
+    }
+    service.hooks(hooks(type))
+    Object.keys(service.Model.schema.obj).forEach(key => {
+      service.Model.schema.remove(key)
+    })
+    service.Model.schema.add(type.fields)
+    service.Model.schema.plugin(mongooseIntl, {
+      languages: process.env.lang.split(',').map(l => l.trim()),
+      defaultLanguage: 'en'
+    })
+  } catch(e) {
+    app.use('/types/' + type.slug, new Type(options, app))
+    const service = app.service('types/' + type.slug)
+    service.hooks(hooks(type))
+  }
 }
 
 let createModel = (app, type) => {
@@ -63,6 +93,7 @@ let permissions = (roles, ownerField = '_id') => {
 }
 
 let hooks = type => {
+
   return {
     before: {
       all: [ ...permissions(type?.roles?.all || [], type.owner || '_id') ],
@@ -97,5 +128,58 @@ let hooks = type => {
 }
 
 class Type extends Service {
+
+  assign(object) {
+    if (object.get) { this.mapGet = object.get } else { this.mapGet = (...args) => super.get(...args) }
+    if (object.find) { this.mapFind = object.find } else { this.mapFind = (...args) => super.find(...args) }
+    if (object.create) { this.mapCreate = object.create } else { this.mapCreate = (...args) => super.create(...args) }
+    if (object.update) { this.mapUpdate = object.update } else { this.mapUpdate = (...args) => super.update(...args) }
+    if (object.patch) { this.mapPatch = object.patch } else { this.mapPatch = (...args) => super.patch(...args) }
+    if (object.remove) { this.mapRemove = object.remove } else { this.mapRemove = (...args) => super.remove(...args) }
+  }
+
+  setup(app, path) {
+    let scope = this
+    this.app = app
+    this.path = path
+    this.parent = {
+      async get(...args) { return scope.parentGet(...args) },
+      async find(...args) { return scope.parentFind(...args) },
+      async create(...args) { return scope.parentCreate(...args) },
+      async update(...args) { return scope.parentUpdate(...args) },
+      async patch(...args) { return scope.parentPatch(...args) },
+      async remove(...args) { return scope.parentRemove(...args) }
+    }
+  }
+
+  async get(...args) { return this.mapGet(...args) }
+  async find(...args) { return this.mapFind(...args) }
+  async create(...args) { return this.mapCreate(...args) }
+  async update(...args) { return this.mapUpdate(...args) }
+  async patch(...args) { return this.mapPatch(...args) }
+  async remove(...args) { return this.mapRemove(...args) }
+
+  async mapGet(...args) { return super.get(...args) }
+  async mapFind(...args) { return super.find(...args) }
+  async mapCreate(...args) { return super.create(...args) }
+  async mapUpdate(...args) { return super.update(...args) }
+  async mapPatch(...args) { return super.patch(...args) }
+  async mapRemove(...args) { return super.remove(...args) }
+
+  async parentGet(...args) { return super.get(...args) }
+  async parentFind(...args) { return super.find(...args) }
+  async parentCreate(...args) { return super.create(...args) }
+  async parentUpdate(...args) { return super.update(...args) }
+  async parentPatch(...args) { return super.patch(...args) }
+  async parentRemove(...args) { return super.remove(...args) }
   
+}
+
+class TypeClean {
+
+  async find(...args) {
+    console.log('second find class', this.path)
+    return this.parent.find(...args)
+  }
+
 }

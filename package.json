@@ -27,8 +27,8 @@
   "scripts": {
     "test": "npm run lint && NODE_OPTIONS=--experimental-vm-modules npm run jest",
     "lint": "eslint src/. test/. --config .eslintrc.json --fix",
-    "dev": "nodemon --ignore admin/ src/",
-    "start": "npm run build; pm2 start src/index.js -n casket -f --watch; pm2 save",
+    "dev": "NODE_OPTIONS=--experimental-vm-modules nodemon --ignore 'admin/' --ignore 'temp/' src/",
+    "start": "NODE_OPTIONS=--experimental-vm-modules npm run build; pm2 start src/index.js -n casket -f --watch; pm2 save",
     "restart": "pm2 restart casket",
     "remove": "pm2 delete casket",
     "stop": "pm2 stop casket",

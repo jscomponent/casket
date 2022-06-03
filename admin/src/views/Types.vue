@@ -44,6 +44,7 @@
         <th>Fields</th>
         <th>Roles</th>
         <th>Owner</th>
+        <th>Instance</th>
         <th>Created</th>
         <th>Updated</th>
         <th>Actions</th>
@@ -56,6 +57,7 @@
         <td><textarea v-model="type.fields"/></td>
         <td><textarea v-model="type.roles"/></td>
         <td><input v-model="type.owner"></td>
+        <td><textarea v-model="type.instance"/></td>
         <td>{{type.createdAt}}</td>
         <td>{{type.updatedAt}}</td>
         <td>
@@ -92,11 +94,11 @@ export default {
     this.list()
   },
   methods: {
-    async create(obj) {
+    async create(object) {
+      let obj = Object.assign({}, object)
       obj.fields = obj.fields ? JSON.parse(obj.fields) : {}
       obj.roles = obj.roles ? JSON.parse(obj.roles) : {}
-      let byteArray = new TextEncoder().encode('Hello from casket!')
-      obj.instance = byteArray.buffer
+      obj.instance = new TextEncoder().encode(obj.instance).buffer
       await this.io.service('types/any').create(obj)
       this.clear()
       this.list()
@@ -112,12 +114,10 @@ export default {
           }
         }
       })
-
-      let parsed = new TextDecoder().decode(response.data[0].instance)
-      console.log('results', parsed)
       response.data = response.data.map(t => {
         if (t.fields) t.fields = JSON.stringify(t.fields)
         if (t.roles) t.roles = JSON.stringify(t.roles)
+        t.instance = new TextDecoder().decode(t.instance)
         return t
       })
       this.$emit('list')
@@ -130,6 +130,7 @@ export default {
         status: type.status,
         fields: type.fields ? JSON.parse(type.fields) : {},
         roles: type.roles ? JSON.parse(type.roles) : {},
+        instance: new TextEncoder().encode(type.instance).buffer,
         owner: type.owner
       })
       this.list()
