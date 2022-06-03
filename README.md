@@ -49,7 +49,7 @@ Where not there yet, but it is surely the right time to get started. 💪🏽
 - [x] Stateless (Using MongoDB adapter for socket connections and uploads in the future)
 - [x] Clustering (Run on multiple cores)
 - [x] Zero downtime (Using pm2 with combination of dynamic services)
-- [ ] Support extending class for dynamic services
+- [x] Support extending class for dynamic services
 - [ ] Graphical design
 - [ ] Media upload (use munter?)
 - [ ] Documentation
