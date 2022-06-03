@@ -85,7 +85,7 @@ export class Settings {
     return 'not-implementet'
   }
 
-  setup(app, path) {
+  async setup(app, path) {
     this.app = app
     this.path = path
   }

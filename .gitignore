@@ -21,6 +21,10 @@ coverage
 
 admin/dist
 
+# Autostartup scripts after boot
+startup.sh
+unstartup.sh
+
 # Compiled binary addons (http://nodejs.org/api/addons.html)
 build/Release
 

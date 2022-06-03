@@ -20,16 +20,20 @@ export default {
             localStorage.setItem('ready', ready)
             if (!ready) app.$router.push('/setup')
             else {
-                $io.reAuthenticate().then(response => {
-                    $io.service('settings').patch('lang', { value: 'en, no' }).then(response => {
-                        console.log('response from setting langstrings', response)
+                try {
+                    $io.reAuthenticate().then(response => {
+                        $io.service('settings').patch('lang', { value: 'en, no' }).then(response => {
+                            console.log('response from setting langstrings', response)
+                        })
+                        localStorage.setItem('user', JSON.stringify(response))
+                        localStorage.setItem('ready', true)
+                        setTimeout(() => app.$router.push(localStorage.getItem('history') || '/'))
+                    }).catch(e => {
+                        app.$router.push('/login')
                     })
-                    localStorage.setItem('user', JSON.stringify(response))
-                    localStorage.setItem('ready', true)
-                    app.$router.push(localStorage.getItem('history') || '/')
-                }).catch((e) => {
-                    app.$router.push('/login')
-                })
+                } catch(e) {
+                    console.log(e)
+                }
             }
         }).catch(e => {
             localStorage.removeItem('ready')

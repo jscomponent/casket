@@ -7,9 +7,8 @@ export class Types extends Service {
   async get(data, params) {
     let results = await super.get(data, params)
     results = results.map(d => {
-      // @todo - Do not parse to Uint8Array on after upgrade to feathers 5.0.0-pre.22
-      // Socketio now supports sending buffers
-      if (d.instance) d.instance = new Uint8Array(d.instance.buffer)
+      if (d.instance) d.instance = d.instance.buffer
+      d._id = d._id.toString()
       return d
     })
     return results
@@ -18,9 +17,8 @@ export class Types extends Service {
   async find(data, params) {
     let results = await super.find(data, params)
     results.data = results.data.map(d => {
-      // @todo - Do not parse to Uint8Array on after upgrade to feathers 5.0.0-pre.22
-      // Socketio now supports sending buffers
-      if (d.instance) d.instance = new Uint8Array(d.instance.buffer)
+      if (d.instance) d.instance = d.instance.buffer
+      d._id = d._id.toString()
       return d
     })
     return results

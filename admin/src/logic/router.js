@@ -55,11 +55,16 @@ export default {
   install(app) {
     app.$router = router
     router.install(app)
-    router.beforeEach(to => {
-    
+    router.beforeEach(async to => {
       let authenticated = localStorage.getItem('user')
       let ready = localStorage.getItem('ready')
-    
+
+      try {
+        await app?.$io?.reAuthenticate()
+      } catch(e) {
+        authenticated = false
+        localStorage.setItem('user', null)
+      }
       ready = ready === null ? ready : JSON.parse(ready)
     
       if (['/logout'].includes(to.path)) {

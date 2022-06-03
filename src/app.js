@@ -24,7 +24,7 @@ app.use(cors())
 app.use(compress())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.use(favicon(path.join(app.get('public'), 'favicon.svg')))
+app.use(favicon(path.resolve('./admin/dist/favicon.svg')))
 app.use('/', express.static(app.get('public')))
 
 app.configure(express.rest())
@@ -39,10 +39,11 @@ if (app.get('mongodb')) {
 app.configure(settings)
 
 app.get('*', (req, res) => {
+  let p = path.resolve('./admin/dist/index.html')
   try {
-    res.sendFile(app.get('public') + '/index.html')
+    res.sendFile(p)
   } catch (error) {
-    res.json({ success: false, message: 'Something went wrong' })
+    res.json({ success: false, message: 'Something went wrong', path: p })
   }
 })
 //app.use(express.notFound())

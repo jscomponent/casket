@@ -113,9 +113,7 @@ export default {
         }
       })
 
-      let buffer = Object.values(response.data[0].instance)
-      let array = new Uint8Array(buffer)
-      let parsed = new TextDecoder().decode(array)
+      let parsed = new TextDecoder().decode(response.data[0].instance)
       console.log('results', parsed)
       response.data = response.data.map(t => {
         if (t.fields) t.fields = JSON.stringify(t.fields)

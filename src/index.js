@@ -8,15 +8,20 @@ const cpus = os.cpus().length
 if (!cluster.isPrimary || cpus <= 1) {
 
   const port = app.get('port')
-  const server = app.listen(port)
 
-  process.on('unhandledRejection', (reason, p) =>
-    logger.error('Unhandled Rejection at: Promise ', p, reason)
-  )
+  app.listen(port).then(server => {
 
-  server.on('listening', () =>
-    logger.info('Feathers application started on http://%s:%d', app.get('host'), port)
-  )
+    process.on('unhandledRejection', (reason, p) =>
+      logger.error('Unhandled Rejection at: Promise ', p, reason)
+    )
+
+    server.on('listening', () =>
+      logger.info('Feathers application started on http://%s:%d', app.get('host'), port)
+    )
+
+  }).catch(e => {
+    console.log('could not listen on port', e)
+  })
 
 } else {
 
