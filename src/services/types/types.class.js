@@ -61,7 +61,7 @@ export class Types extends Service {
     return results
   }
 
-  setup(app, path) {
+  async setup(app, path) {
     this.app = app
     this.path = path
   }
