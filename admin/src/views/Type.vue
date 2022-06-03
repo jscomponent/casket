@@ -2,25 +2,6 @@
   <div>
     <h2>{{instance.title}}</h2>
 
-    <button @click="remove(type)">Add</button>
-
-    <h3>Fields</h3>
-    <table>
-      <tr>
-        <th>Key</th>
-        <th>Type</th>
-        <th>Actions</th>
-      </tr>
-      <tr v-for="key in fields" :key="key">
-        <td><input :value="key"></td>
-        <td><input v-model="instance.fields[key]"></td>
-        <td>
-          <button @click="save(type)">Save</button>
-          <button @click="remove(type)">Remove</button>
-        </td>
-      </tr>
-    </table>
-
     <h3>Data</h3>
 
     <div v-for="key in fields" :key="key">
@@ -69,8 +50,6 @@ export default {
   inject: ['io'], 
   data: () => ({
     obj: {},
-    title: '',
-    slug: '',
     limit: 25,
     page: 1,
     response: null,
