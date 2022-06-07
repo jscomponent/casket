@@ -117,7 +117,6 @@ export default {
           }
         }
       })
-      console.log(response.data)
       response.data = response.data.map(t => {
         if (t.fields) t.fields = JSON.stringify(t.fields)
         if (t.roles) t.roles = JSON.stringify(t.roles)
