@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>{{instance.title}}</h2>
+    <h2>{{instance.title?.en}}</h2>
 
     <h3>Data</h3>
 
