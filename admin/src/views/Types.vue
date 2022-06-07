@@ -3,7 +3,8 @@
     <h2>Types</h2>
     <div>
       <label>Title</label>
-      <input v-model="title"/>
+      <input v-if="title?.en" v-model="title.en">
+      <input v-else v-model="title">
     </div>
     <div>
       <label>Slug</label>
