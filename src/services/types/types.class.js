@@ -4,8 +4,8 @@ const { Service } = pkg
 
 export class Types extends Service {
   
-  async get(data, params) {
-    let results = await super.get(data, params)
+  async get(id, params) {
+    let results = await super.get(id, params)
     results = results.map(d => {
       if (d.instance) d.instance = d.instance.buffer
       d._id = d._id.toString()
@@ -14,8 +14,8 @@ export class Types extends Service {
     return results
   }
 
-  async find(data, params) {
-    let results = await super.find(data, params)
+  async find(params) {
+    let results = await super.find(params)
     results.data = results.data.map(d => {
       if (d.instance) d.instance = d.instance.buffer
       d._id = d._id.toString()
@@ -42,14 +42,24 @@ export class Types extends Service {
     return results
   }
 
-  async update(data, params) {
-    let results = await super.update(data, params)
+  async update(id, data, params) {
+    let old = await this.get(id)
+    let results = await super.update(id, data, params)
     await register(this.app, results)
+    if (results.slug) {
+      let mongoClient = this.app.get('mongooseClient').connection.client
+      mongoClient.db().collection('types/' + old.slug).rename('types/' + results.slug)
+    }
     return results
   }
 
-  async patch(data, params) {
-    let results = await super.patch(data, params)
+  async patch(id, data, params) {
+    let old = await this.get(id)
+    let results = await super.patch(id, data, params)
+    if (results.slug) {
+      let mongoClient = this.app.get('mongooseClient').connection.client
+      mongoClient.db().collection('types/' + old.slug).rename('types/' + results.slug)
+    }
     await register(this.app, results)
     return results
   }
