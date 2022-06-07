@@ -9,7 +9,7 @@
     </nav>
 
     <nav>
-      <router-link v-for="type in types" :key="type._id" :to="'/admin/types/' + type.slug">{{type.title}}</router-link>
+      <router-link v-for="type in types" :key="type._id" :to="'/admin/types/' + type.slug">{{type?.en?.title || type.title}}</router-link>
     </nav>
 
     <router-view @list="list"/>
