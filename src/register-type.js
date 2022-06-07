@@ -31,14 +31,20 @@ export default async (app, type) => {
       service.assign(new TypeClean())
     }
     service.hooks(hooks(type))
-    Object.keys(service.Model.schema.obj).forEach(key => {
-      service.Model.schema.remove(key)
-    })
-    service.Model.schema.add(type.fields)
+    let currentSchema = service?.Model?.schema?.obj
+    if (currentSchema && typeof currentSchema === 'object') {
+      Object.keys(currentSchema).forEach(key => {
+        service.Model.schema.remove(key)
+      })
+    }
+    if (type.fields && typeof type.fields === 'object') {
+      service.Model.schema.add(type.fields)
+    }
     service.Model.schema.plugin(mongooseIntl, {
       languages: process.env.lang.split(',').map(l => l.trim()),
       defaultLanguage: 'en'
     })
+    return
   } catch(e) {
 
     app.use('/types/' + type.slug, new Type(options, app))
