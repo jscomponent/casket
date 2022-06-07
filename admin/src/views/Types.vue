@@ -145,6 +145,7 @@ export default {
     clear() {
       this.title = ''
       this.slug = ''
+      this.status = ''
       this.fields = ''
       this.roles = ''
       this.owner = ''
