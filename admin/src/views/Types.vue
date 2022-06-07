@@ -3,8 +3,7 @@
     <h2>Types</h2>
     <div>
       <label>Title</label>
-      <input v-if="title?.en" v-model="title.en">
-      <input v-else v-model="title">
+      <input v-model="title">
     </div>
     <div>
       <label>Slug</label>
@@ -53,7 +52,7 @@
       <tr v-for="type in types" :key="type._id">
         <td>{{type._id}}</td>
         <td>
-          <input v-if="type?.en?.title" v-model="type.en.title">
+          <input v-if="type?.title?.en" v-model="type.title.en">
           <input v-else v-model="type.title">
         </td>
         <td><input v-model="type.slug"></td>
@@ -118,6 +117,7 @@ export default {
           }
         }
       })
+      console.log(response.data)
       response.data = response.data.map(t => {
         if (t.fields) t.fields = JSON.stringify(t.fields)
         if (t.roles) t.roles = JSON.stringify(t.roles)
