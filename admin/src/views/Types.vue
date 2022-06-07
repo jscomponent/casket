@@ -52,7 +52,10 @@
       </tr>
       <tr v-for="type in types" :key="type._id">
         <td>{{type._id}}</td>
-        <td><input v-model="type.title"></td>
+        <td>
+          <input v-if="type?.en?.title" v-model="type.en.title">
+          <input v-else v-model="type.title">
+        </td>
         <td><input v-model="type.slug"></td>
         <td><input v-model="type.status"></td>
         <td><textarea v-model="type.fields"/></td>
