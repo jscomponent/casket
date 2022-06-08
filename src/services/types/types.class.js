@@ -24,13 +24,12 @@ export class Types extends Service {
   async create(data, params) {
     if (!data.roles || Object.keys(data.roles).length === 0) {
       data.roles = {
-        all: [],
-        find: [],
-        get: [],
-        create: ['auth', 'admin'],
-        update: ['auth', 'admin'],
-        patch: ['auth', 'admin'],
-        remove: ['auth', 'admin']
+        find: ['anonymous'],
+        get: ['anonymous'],
+        create: ['admin'],
+        update: ['admin'],
+        patch: ['admin'],
+        remove: ['admin']
       }
     }
     if (!data.owner) data.owner = '_id'

@@ -115,7 +115,6 @@ let hooks = type => {
 
   return {
     before: {
-      all: [ ...permissions(type, 'all') ],
       find: [ ...permissions(type, 'find') ],
       get: [ ...permissions(type, 'get') ],
       create: [ ...permissions(type, 'create') ],
