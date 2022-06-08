@@ -22,7 +22,14 @@
     <table>
       <tr>
         <th>ID</th>
-        <th v-for="key in fields" :key="key">{{key}}</th>
+        <th v-for="key in fields" :key="key">
+          <span v-if="instance?.fields[key]?.title?.en">
+            {{instance.fields[key].title.en}}
+          </span>
+          <span v-else>
+            {{key}}
+          </span>
+        </th>
         <th>Created</th>
         <th>Updated</th>
         <th>Actions</th>

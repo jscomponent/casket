@@ -36,6 +36,7 @@ export default async (app, type) => {
       })
     }
     if (type.fields && typeof type.fields === 'object') {
+      Object.keys(type.fields).forEach(k => delete type.fields[k].title)
       service.Model.schema.add(type.fields)
     }
     service.Model.schema.plugin(mongooseIntl, {
@@ -62,6 +63,9 @@ export default async (app, type) => {
 let createModel = (app, type) => {
   const modelName = 'types/' + type.slug
   const mongooseClient = app.get('mongooseClient')
+  if (type.fields && typeof type.fields === 'object') {
+    Object.keys(type.fields).forEach(k => delete type.fields[k].title)
+  }
   const schema = new mongooseClient.Schema(type.fields,
     { timestamps: true, collection: modelName }
   )
