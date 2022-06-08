@@ -100,9 +100,17 @@ export default {
       this.listRow()
     },
     async listRow() {
+      let query = { $or: [] }
+      this.fields.forEach(field => {
+        if (this.instance.fields[field].type === 'String') {
+          let obj = {}
+          obj[field] = { $regex: this.search }
+          query.$or.push(obj)
+        }
+      })
       let response = await this.io.service('types/' + this.type).find({
         query: {
-          title: { $search: this.search },
+          ...query,
           $limit: this.limit,
           $skip: (this.page - 1) * this.limit,
           $sort: {
@@ -110,7 +118,6 @@ export default {
           }
         }
       })
-      console.log('list row', response)
       this.responseRow = response
     },
     async create(obj) {

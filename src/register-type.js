@@ -66,9 +66,10 @@ let createModel = (app, type) => {
   if (type.fields && typeof type.fields === 'object') {
     Object.keys(type.fields).forEach(k => delete type.fields[k].title)
   }
-  const schema = new mongooseClient.Schema(type.fields,
-    { timestamps: true, collection: modelName }
-  )
+  const schema = new mongooseClient.Schema(type.fields, {
+    timestamps: true,
+    collection: modelName
+  })
   if (mongooseClient.modelNames().includes(modelName)) {
     mongooseClient.deleteModel(modelName)
   }
