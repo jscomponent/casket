@@ -93,7 +93,7 @@ let permissions = (type, method) => {
     checkPermissions({
       roles: async ctx => {
         if (ctx.params.anonymous) {
-          ctx.params.user = { roles: [] }
+          ctx.params.user = {}
           ctx.params.permitted = true
           return ['*']
         }
