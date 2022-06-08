@@ -18,7 +18,6 @@ export default async (app, type) => {
   let instance = type.instance.toString('base64')
   try {
     let service = app.service('/types/' + type.slug)
-    Object.assign(service.__hooks, { before: {}, after: {}, error: {} })
     if (instance) {
       try {
         const { Entity } = await import(`data:text/javascript;base64,${instance}`)
@@ -30,7 +29,6 @@ export default async (app, type) => {
     } else {
       service.assign(new TypeClean())
     }
-    service.hooks(hooks(type))
     let currentSchema = service?.Model?.schema?.obj
     if (currentSchema && typeof currentSchema === 'object') {
       Object.keys(currentSchema).forEach(key => {
@@ -77,43 +75,53 @@ let createModel = (app, type) => {
   return mongooseClient.model(modelName, schema)
 }
 
-let permissions = (roles, ownerField = '_id') => {
-  let permissions = []
-  if (!roles.length) return permissions
-  if (roles.includes('auth')) {
-    roles = roles.filter(r => r === 'auth')
-    permissions.push(authenticate('jwt'))
-  }
-  if (!roles.length) return permissions
-  permissions.push(
+let permissions = (type, method) => {
+  return [
+    async ctx => {
+      const { params } = ctx
+      let results = await ctx.app.service('types/any').find({ query: { slug: type.slug } })
+      ctx.params.typeRoles = results.data[0]?.roles[method] || []
+      if (params.provider && ctx.params.typeRoles.includes('anonymous')) {
+        ctx.params = {
+          ...params,
+          authentication: { strategy: 'anonymous' }
+        }
+      }
+      return ctx
+    },
+    authenticate('jwt', 'anonymous'),
     checkPermissions({
-      roles: roles,
+      roles: async ctx => {
+        if (ctx.params.anonymous) {
+          ctx.params.user = { roles: [] }
+          ctx.params.permitted = true
+          return ['*']
+        }
+        return ctx.params.typeRoles
+      },
       error: false
-    })
-  )
-  permissions.push(
+    }),
     iff(ctx => !ctx.params.permitted,
       setField({
-        from: 'params.user.' + ownerField,
-        as: 'params.query.owner_id',
+        from: 'params.user.' + (type.owner || '_id'),
+        as: 'params.query._id',
         allowUndefined: false
       })
     )
-  )
-  return permissions
+  ]
 }
 
 let hooks = type => {
 
   return {
     before: {
-      all: [ ...permissions(type?.roles?.all || [], type.owner || '_id') ],
-      find: [ ...permissions(type?.roles?.find || [], type.owner || '_id') ],
-      get: [ ...permissions(type?.roles?.get || [], type.owner || '_id') ],
-      create: [ ...permissions(type?.roles?.create || [], type.owner || '_id') ],
-      update: [ ...permissions(type?.roles?.update || [], type.owner || '_id') ],
-      patch: [ ...permissions(type?.roles?.patch || [], type.owner || '_id') ],
-      remove: [ ...permissions(type?.roles?.remove || [], type.owner || '_id') ]
+      all: [ ...permissions(type, 'all') ],
+      find: [ ...permissions(type, 'find') ],
+      get: [ ...permissions(type, 'get') ],
+      create: [ ...permissions(type, 'create') ],
+      update: [ ...permissions(type, 'update') ],
+      patch: [ ...permissions(type, 'patch') ],
+      remove: [ ...permissions(type, 'remove') ]
     },
 
     after: {

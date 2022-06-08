@@ -5,8 +5,7 @@ const { authenticate } = feathersAuthentication.hooks
 
 let permissions = [
   checkPermissions({
-    roles: ['admin'],
-    error: false
+    roles: ['admin']
   })
 ]
 
