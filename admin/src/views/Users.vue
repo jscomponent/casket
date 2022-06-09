@@ -10,10 +10,14 @@
       <input v-model="password" type="password"/>
     </div>
     <div>
+      <label>Locale</label>
+      <input v-model="locale"/>
+    </div>
+    <div>
       <label>Permission</label>
       <input v-model="permission"/>
     </div>
-    <button @click="create({email, password, permissions: [permission]})">Create</button>
+    <button @click="create({email, password, locale, permissions: [permission]})">Create</button>
     <button @click="clear">Clear</button>
     <button @click="list">List</button>
     <button @click="page--, list()">Prev page</button>
@@ -27,6 +31,8 @@
       <tr>
         <th>ID</th>
         <th>Email</th>
+        <th>Password</th>
+        <th>Locale</th>
         <th>Permission</th>
         <th>Created</th>
         <th>Updated</th>
@@ -35,7 +41,9 @@
       <tr v-for="user in users" :key="user._id">
         <td>{{user._id}}</td>
         <td><input v-model="user.email"></td>
-        <td>{{user.permissions.join(' ')}}</td>
+        <td><input v-model="user.password"></td>
+        <td><input v-model="user.locale"></td>
+        <td><input v-model="user.permissions[0]">{{user.permissions.join(' ')}}</td>
         <td>{{user.createdAt}}</td>
         <td>{{user.updatedAt}}</td>
         <td><button @click="save(user)">Save</button></td>
@@ -51,6 +59,7 @@ export default {
   data: () => ({
     email: '',
     password: '',
+    locale: '',
     permission: '',
     response: null,
     search: '',
@@ -85,9 +94,13 @@ export default {
       this.response = response
     },
     async save(user) {
-      await this.io.service('users').patch(user._id, {
-        email: user.email
-      })
+      let usr = Object.assign({}, user)
+      if (!usr.password) delete usr.password
+      if (usr.password && usr.password.length < 6) {
+        alert('Too short password!')
+        return
+      }
+      await this.io.service('users').patch(usr._id, usr)
       this.list()
     },
     async remove(user) {
@@ -97,6 +110,7 @@ export default {
     clear() {
       this.email = ''
       this.password = ''
+      this.locale = ''
       this.permission = ''
     }
   }

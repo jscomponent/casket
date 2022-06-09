@@ -118,6 +118,7 @@ export default {
           }
         }
       })
+      console.log(response)
       this.responseRow = response
     },
     async create(obj) {
