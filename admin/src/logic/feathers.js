@@ -22,9 +22,6 @@ export default {
             else {
                 try {
                     $io.reAuthenticate().then(response => {
-                        $io.service('settings').patch('lang', { value: 'en, no' }).then(response => {
-                            console.log('response from setting langstrings', response)
-                        })
                         localStorage.setItem('user', JSON.stringify(response))
                         localStorage.setItem('ready', true)
                         setTimeout(() => app.$router.push(localStorage.getItem('history') || '/'))

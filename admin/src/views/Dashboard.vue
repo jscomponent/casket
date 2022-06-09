@@ -6,6 +6,7 @@
       <router-link to="/admin">Profile</router-link>
       <router-link to="/admin/users">Users</router-link>
       <router-link to="/admin/types">Types</router-link>
+      <router-link to="/admin/config">Config</router-link>
     </nav>
 
     <nav>

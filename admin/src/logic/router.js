@@ -14,6 +14,10 @@ const routes = [
         component: () => import('@/views/Users.vue')
       },
       {
+        path: 'config',
+        component: () => import('@/views/Config.vue')
+      },
+      {
         path: 'types',
         component: () => import('@/views/Types.vue')
       },

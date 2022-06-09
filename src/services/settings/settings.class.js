@@ -21,8 +21,9 @@ export class Settings {
       let obj = dotenv.parse(env)
       if (obj.mongodb) return 'ready'
       return 'setup'
+    } else {
+      return process.env[id]
     }
-    throw new Error('unknown status')
   }
   
   async create(data) {
