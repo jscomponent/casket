@@ -3,7 +3,7 @@ import socketio from '@feathersjs/socketio-client'
 import auth from '@feathersjs/authentication-client'
 import io from 'socket.io-client'
 
-let socket = io( process.env.host, {
+let socket = io(process.env.host, {
     transports: ['websocket'],
     upgrade: false
 })
