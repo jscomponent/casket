@@ -18,19 +18,16 @@ export default {
         $io.service('settings').get('status').then(response => {
             let ready = response === 'ready'
             localStorage.setItem('ready', ready)
-            if (!ready) app.$router.push('/setup')
-            else {
-                try {
-                    $io.reAuthenticate().then(response => {
-                        localStorage.setItem('user', JSON.stringify(response))
-                        localStorage.setItem('ready', true)
-                        setTimeout(() => app.$router.push(localStorage.getItem('history') || '/'))
-                    }).catch(e => {
-                        app.$router.push('/login')
-                    })
-                } catch(e) {
-                    console.log(e)
-                }
+            if (!ready) {
+                app.$router.push('/setup')
+            } else {
+                $io.reAuthenticate().then(response => {
+                    localStorage.setItem('user', JSON.stringify(response))
+                    localStorage.setItem('ready', true)
+                    setTimeout(() => app.$router.push(localStorage.getItem('history') || '/'))
+                }).catch(e => {
+                    app.$router.push('/login')
+                })
             }
         }).catch(e => {
             localStorage.removeItem('ready')
