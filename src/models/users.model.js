@@ -6,6 +6,7 @@ export default app => {
       email: { type: String, unique: true, lowercase: true },
       password: { type: String },
       locale: { type: String },
+      owner_group: { type: String },
       permissions: { type: Array }
     },
     {

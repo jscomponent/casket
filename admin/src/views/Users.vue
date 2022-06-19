@@ -17,7 +17,11 @@
       <label>Permission</label>
       <input v-model="permission"/>
     </div>
-    <button @click="create({email, password, locale, permissions: [permission]})">Create</button>
+    <div>
+      <label>Owner group</label>
+      <input v-model="owner_group"/>
+    </div>
+    <button @click="create({email, password, locale, permissions: [permission], owner_group})">Create</button>
     <button @click="clear">Clear</button>
     <button @click="list">List</button>
     <button @click="page--, list()">Prev page</button>
@@ -34,6 +38,7 @@
         <th>Password</th>
         <th>Locale</th>
         <th>Permission</th>
+        <th>Owner group</th>
         <th>Created</th>
         <th>Updated</th>
         <th>Actions</th>
@@ -44,6 +49,7 @@
         <td><input v-model="user.password"></td>
         <td><input v-model="user.locale"></td>
         <td><input v-model="user.permissions[0]">{{user.permissions.join(' ')}}</td>
+        <td><input v-model="user.owner_group"></td>
         <td>{{user.createdAt}}</td>
         <td>{{user.updatedAt}}</td>
         <td><button @click="save(user)">Save</button></td>
@@ -58,8 +64,10 @@ export default {
   inject: ['io'], 
   data: () => ({
     email: '',
+    owner_group: '',
     password: '',
     locale: '',
+    owner_group: '',
     permission: '',
     response: null,
     search: '',
@@ -109,6 +117,7 @@ export default {
     },
     clear() {
       this.email = ''
+      this.owner_group = ''
       this.password = ''
       this.locale = ''
       this.permission = ''
