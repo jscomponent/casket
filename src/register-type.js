@@ -112,6 +112,13 @@ let permissions = (type, method) => {
         as: 'params.query._id',
         allowUndefined: false
       })
+    ),
+    iff(ctx => !ctx.params.permitted,
+      setField({
+        from: 'params.user.' + (type.owner || '_id'),
+        as: 'params.query.user_id',
+        allowUndefined: false
+      })
     )
   ]
 }
