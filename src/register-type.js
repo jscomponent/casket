@@ -109,7 +109,7 @@ let permissions = (type, method) => {
     iff(ctx => !ctx.params.permitted,
       setField({
         from: 'params.user.' + (type.owner || '_id'),
-        as: 'params.query.user_id'
+        as: 'params.query.' + (type.owner_group || 'user_id')
       })
     )
   ]

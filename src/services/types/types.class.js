@@ -33,6 +33,7 @@ export class Types extends Service {
       }
     }
     if (!data.owner) data.owner = '_id'
+    if (!data.owner_group) data.owner_group = 'user_id'
     let results = await super.create(data, params)
     await register(this.app, results)
     return results

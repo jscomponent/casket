@@ -10,7 +10,8 @@ export default app => {
       fields: { type: Object },
       instance: { type: Buffer },
       roles: { type: Object },
-      owner: { type: String }
+      owner: { type: String },
+      owner_group: { type: String }
     },
     {
       timestamps: true,

@@ -25,7 +25,11 @@
       <label>Owner field</label>
       <input v-model="owner"/>
     </div>
-    <button @click="create({title, slug, status, fields, roles, owner})">Create</button>
+    <div>
+      <label>Owner group field</label>
+      <input v-model="owner_group"/>
+    </div>
+    <button @click="create({title, slug, status, fields, roles, owner, owner_group})">Create</button>
     <button @click="clear">Clear</button>
     <button @click="list">List</button>
     <button @click="page--, list()">Prev page</button>
@@ -44,6 +48,7 @@
         <th>Fields</th>
         <th>Roles</th>
         <th>Owner</th>
+        <th>Owner group</th>
         <th>Instance</th>
         <th>Created</th>
         <th>Updated</th>
@@ -60,6 +65,7 @@
         <td><textarea v-model="type.fields"/></td>
         <td><textarea v-model="type.roles"/></td>
         <td><input v-model="type.owner"></td>
+        <td><input v-model="type.owner_group"></td>
         <td><textarea v-model="type.instance"/></td>
         <td>{{type.createdAt}}</td>
         <td>{{type.updatedAt}}</td>
@@ -83,6 +89,7 @@ export default {
     fields: '',
     roles: '',
     owner: '',
+    owner_group: '',
     limit: 25,
     page: 1,
     response: null,
@@ -134,7 +141,8 @@ export default {
         fields: type.fields ? JSON.parse(type.fields) : {},
         roles: type.roles ? JSON.parse(type.roles) : {},
         instance: new TextEncoder().encode(type.instance).buffer,
-        owner: type.owner
+        owner: type.owner,
+        owner_group: type.owner_group
       })
       this.list()
     },
@@ -149,6 +157,7 @@ export default {
       this.fields = ''
       this.roles = ''
       this.owner = ''
+      this.owner_group = ''
     }
   }
 }
