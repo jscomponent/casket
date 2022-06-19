@@ -106,12 +106,6 @@ let permissions = (type, method) => {
       },
       error: false
     }),
-    /*iff(ctx => !ctx.params.permitted,
-      setField({
-        from: 'params.user.' + (type.owner || '_id'),
-        as: 'params.query._id'
-      })
-    ),*/
     iff(ctx => !ctx.params.permitted,
       setField({
         from: 'params.user.' + (type.owner || '_id'),
