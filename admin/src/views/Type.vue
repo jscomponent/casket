@@ -108,7 +108,7 @@ export default {
           query.$or.push(obj)
         }
       })
-      if (!query.$or.length) delete query.$or
+      if (!query.$or.length || !this.search) delete query.$or
       let response = await this.io.service('types/' + this.type).find({
         query: {
           ...query,
