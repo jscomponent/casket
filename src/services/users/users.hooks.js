@@ -24,7 +24,7 @@ let permissions = [
 
 let restrictAdminRole = async ctx => {
   if (!ctx.params.provider) return ctx // server can add admins
-  if (!ctx.params.user || (ctx.params.user.permissions && !ctx.params.user.permissions.includes('admin'))) {
+  if (ctx.data.permissions && !ctx.params?.user?.permissions?.includes('admin')) {
     ctx.data.permissions = ctx.data.permissions.filter(role => role !== 'admin')
   }
   return ctx
