@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import cluster from 'cluster'
 import os from 'os'
 import logger from './logger.js'
@@ -7,6 +8,7 @@ const cpus = os.cpus().length
 
 if (!cluster.isPrimary || cpus <= 1) {
 
+  if (process.env.port) app.set('port', process.env.port)
   const port = app.get('port')
 
   app.listen(port).then(server => {
