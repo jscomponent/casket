@@ -34,7 +34,7 @@
     "delete": "node ./scripts/delete.js",
     "startup": "pm2 startup > startup.tmp; tail -n 1 startup.tmp > startup.sh; sh startup.sh; rm startup.tmp",
     "unstartup": "pm2 unstartup > unstartup.tmp; tail -n 1 unstartup.tmp > unstartup.sh; sh unstartup.sh; rm unstartup.tmp",
-    "update": "git pull; npm run unstartup; npm run remove; npm run start; npm run startup",
+    "update": "git pull; npm run unstartup; npm run delete; npm run start; npm run startup",
     "jest": "jest --forceExit",
     "build": "npm i && cd admin && npm i && npm run build"
   },
