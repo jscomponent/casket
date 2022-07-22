@@ -18,6 +18,7 @@ const app = express(feathers())
 
 app.configure(configuration())
 app.set('mongodb', process.env.mongodb)
+app.set('etag', false)
 
 app.use(helmet({ contentSecurityPolicy: false }))
 app.use(cors())
