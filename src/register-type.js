@@ -48,10 +48,8 @@ export default async (app, type) => {
 
     app.use('/types/' + type.slug, new Type(options, app), (req, res, next) => {
       if (res?.data?.buffer && res?.data['content-type']) {
-        //res.set('Content-Type', res.data['content-type'])
-        res.set('Content-Type', 'application/pdf')
-        res.type('pdf')
-        res.setHeader('Content-Type', 'application/pdf')
+        res.set('Cache-Control', 'no-store')
+        res.set('Content-Type', res.data['content-type'])
         res.send(res.data.buffer)
       } else {
         next()
