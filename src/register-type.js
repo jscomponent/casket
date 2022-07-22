@@ -46,7 +46,13 @@ export default async (app, type) => {
     return
   } catch(e) {
 
-    app.use('/types/' + type.slug, new Type(options, app))
+    app.use('/types/' + type.slug, new Type(options, app), (req, res, next) => {
+      if (res?.data?.buffer && res?.data['content-type']) {
+        res.set('Content-Type', res.data['content-type'])
+        res.send(res.data.buffer)
+      }
+      next()
+    })
     const service = app.service('types/' + type.slug)
     service.hooks(hooks(type))
     if (instance) {
