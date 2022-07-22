@@ -50,8 +50,9 @@ export default async (app, type) => {
       if (res?.data?.buffer && res?.data['content-type']) {
         res.set('Content-Type', res.data['content-type'])
         res.send(res.data.buffer)
+      } else {
+        next()
       }
-      next()
     })
     const service = app.service('types/' + type.slug)
     service.hooks(hooks(type))
