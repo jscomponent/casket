@@ -8,7 +8,6 @@ import mongodb from 'mongodb'
 
 export default app => {
   let db = app.get('mongooseClient').connection.client.db()
-  app.set('mdb', mongodb)
   app.set('bucket', new mongodb.GridFSBucket(db, { bucketName: 'uploads' }))
   if (!app.io) app.configure(socketio(io => adapter(io, app)))
   app.configure(services)
