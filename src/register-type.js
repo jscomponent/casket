@@ -47,8 +47,8 @@ export default async (app, type) => {
   } catch(e) {
 
     app.use('/types/' + type.slug, new Type(options, app), (req, res, next) => {
+      res.set('Cache-Control', 'no-store')
       if (res?.data?.buffer && res?.data['content-type']) {
-        res.set('Cache-Control', 'no-store')
         res.set('Content-Type', res.data['content-type'])
         res.send(res.data.buffer)
       } else {
