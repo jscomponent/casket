@@ -27,6 +27,11 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(favicon(path.resolve('./admin/dist/favicon.svg')))
 app.use('/', express.static(app.get('public')))
+service.use((req, res, next) => {
+  res.header('Cross-Origin-Opener-Policy', 'cross-origin')
+  res.header('Cross-Origin-Resource-Policy', 'cross-origin')
+  next()
+})
 
 app.configure(express.rest())
 
