@@ -100,8 +100,7 @@ let permissions = (type, method) => {
       if (params.provider && ctx.params.typeRoles.includes('anonymous')) {
         ctx.params = {
           ...params,
-          connected_user: ctx?.params?.user,
-          authentication: { strategy: 'anonymous' }
+          authentication: { strategy: 'anonymous', demo: 'hello', user: ctx?.params?.user }
         }
       }
       return ctx
