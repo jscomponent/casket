@@ -97,7 +97,6 @@ let permissions = (type, method) => {
       const { params } = ctx
       let results = await ctx.app.service('types/any').find({ query: { slug: type.slug } })
       ctx.params.typeRoles = results.data[0]?.roles[method] || []
-      console.log('context params', ctx.params)
       if (params.provider && ctx.params.typeRoles.includes('anonymous')) {
         ctx.params = {
           ...params,
