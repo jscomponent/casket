@@ -16,7 +16,8 @@ export default app => {
 class AnonymousStrategy extends AuthenticationBaseStrategy {
   async authenticate(authentication, params) {
     return {
-      anonymous: true
+      anonymous: true,
+      connected_user: params?.user
     }
   }
 }
