@@ -15,10 +15,12 @@ export default app => {
 
 class AnonymousStrategy extends AuthenticationBaseStrategy {
   async authenticate(authentication, params) {
-    console.log('anon', params)
+    // console.log('anon', params)
     return {
       anonymous: true,
-      connected_user: params?.user
+      demo: { hello: 'world' },
+      conny: params.connection,
+      usi: params.user
     }
   }
 }
