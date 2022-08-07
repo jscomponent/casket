@@ -23,10 +23,17 @@ let permissions = [
 ]
 
 let restrictAdminRole = async ctx => {
-  if (!ctx.params.provider) return ctx // server can add admins
+  if (!ctx.params.provider) return ctx // server has no restrictions
   if (ctx.data.permissions && !ctx.params?.user?.permissions?.includes('admin')) {
     ctx.data.permissions = ctx.data.permissions.filter(role => role !== 'admin')
   }
+  return ctx
+}
+
+let ensureUserRole = async ctx => {
+  if (!ctx.params.provider) return ctx // server has no restrictions
+  if (!ctx.data.permissions) ctx.data.permissions = ctx.params?.user?.permissions || []
+  if (!ctx.data.permissions.includes('user')) ctx.data.permissions.push('user')
   return ctx
 }
 
@@ -35,9 +42,9 @@ export default {
     all: [],
     find: [ authenticate('jwt'), ...permissions ],
     get: [ authenticate('jwt'), ...permissions ],
-    create: [ hashPassword('password'), restrictAdminRole ],
-    update: [ hashPassword('password'), authenticate('jwt'), ...permissions, restrictAdminRole ],
-    patch: [ hashPassword('password'), authenticate('jwt'), ...permissions, restrictAdminRole ],
+    create: [ hashPassword('password'), restrictAdminRole, ensureUserRole ],
+    update: [ hashPassword('password'), authenticate('jwt'), ...permissions, restrictAdminRole, ensureUserRole ],
+    patch: [ hashPassword('password'), authenticate('jwt'), ...permissions, restrictAdminRole, ensureUserRole ],
     remove: [ authenticate('jwt'), ...permissions ]
   },
 
