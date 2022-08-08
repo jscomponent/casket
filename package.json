@@ -64,12 +64,17 @@
     "feathers-hooks-common": "^5.0.0",
     "feathers-mongoose": "^8.5.1",
     "feathers-permissions": "^2.1.4",
+    "googleapis": "^105.0.0",
     "helmet": "^5.1.0",
     "mongodb": "^4.6.0",
     "mongodb-core": "^3.2.7",
+    "mongodb-snapshot": "^1.4.1",
     "mongoose": "^6.3.5",
     "mongoose-intl": "^3.3.0",
     "serve-favicon": "^2.5.0",
     "winston": "^3.7.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19"
   }
 }

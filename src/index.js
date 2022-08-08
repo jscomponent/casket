@@ -3,6 +3,7 @@ import cluster from 'cluster'
 import os from 'os'
 import logger from './logger.js'
 import app from './app.js'
+import autobackup from './autobackup.js'
 
 const cpus = os.cpus().length
 
@@ -27,6 +28,7 @@ if (!cluster.isPrimary || cpus <= 1) {
 
 } else {
 
+  autobackup()
   for (let i = 0; i < cpus; i++) {
     cluster.fork()
   }

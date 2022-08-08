@@ -22,7 +22,12 @@ export class Settings {
       if (obj.mongodb) return 'ready'
       return 'setup'
     } else {
-      return process.env[id]
+      let env = ''
+      // eslint-disable-next-line no-empty
+      try { env = fs.readFileSync(path.resolve('./.env'), { encoding: 'utf8' }) } catch (e) {}
+      let obj = dotenv.parse(env)
+      if (!obj[id]) return ''
+      return obj[id]
     }
   }
   
