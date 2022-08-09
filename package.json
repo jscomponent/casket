@@ -66,6 +66,7 @@
     "feathers-permissions": "^2.1.4",
     "googleapis": "^105.0.0",
     "helmet": "^5.1.0",
+    "moment": "^2.29.4",
     "mongodb": "^4.6.0",
     "mongodb-core": "^3.2.7",
     "mongodb-snapshot": "^1.4.1",

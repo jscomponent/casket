@@ -1,33 +1,61 @@
 import fs from 'fs'
 import path from 'path'
 import dotenv from 'dotenv'
+import moment from 'moment'
 import { google } from 'googleapis'
 import { MongoTransferer, MongoDBDuplexConnector, LocalFileSystemDuplexConnector } from 'mongodb-snapshot';
 
+const minimumInterval = 1000 * 10
+const currentInterval = 1000 * 60
+const checkforChanges = 1000 * 10
 
 export default async () => {
-    
-    //setInterval(async () => {
-        /*
+    setInterval(async () => {
         let env = ''
         try { env = fs.readFileSync(path.resolve('./.env'), { encoding: 'utf8' }) } catch (e) {}
         let obj = dotenv.parse(env)
-        if (obj['google-secret']) {
-            let secret = Buffer.from(obj['google-secret'], 'base64')
-            let credentials = JSON.parse(secret)
-            let folder = obj['google-folder']
-            await dump(obj['mongodb'])
-            upload(credentials, folder, 'backup2.tar')
+        let interval = obj['backup-interval']
+        interval = parseInt(interval)
+        if (interval < minimumInterval) return
+        else if (interval !== currentInterval) {
+            currentInterval = interval
+            clearInterval(backupInterval)
+            backupInterval = setInterval(() => backup(), currentInterval)
+            backup()
         }
-        */
-    //}, 1000 * 60 * 24)
+    }, checkforChanges)
 }
 
-let dump = async (uri) => {
-    let dbname = uri.split('?')
-    dbname = dbname[0]
-    dbname = dbname.split('/')
-    dbname = dbname[dbname.length-1]
+let backupInterval = setInterval(() => backup(), currentInterval)
+
+let getdbname = (uri) => {
+    uri = uri.split('?')
+    uri = uri[0]
+    uri = uri.split('/')
+    return uri[uri.length-1]
+}
+
+let backup = () => {
+    let env = ''
+    try { env = fs.readFileSync(path.resolve('./.env'), { encoding: 'utf8' }) } catch (e) {}
+    let obj = dotenv.parse(env)
+    let uri = obj['mongodb']
+    let credentials = obj['google-secret']
+    let folder = obj['google-folder']
+    if (uri && credentials && folder) {
+        try {
+            let secret = Buffer.from(credentials, 'base64')
+            let credentials = JSON.parse(secret)
+            let dbname = getdbname(uri)
+            await dump(uri, dbname)
+            upload(credentials, folder, dbname + '-' + moment().format('YYYY-MM-DD HH.mm') + '.tar')
+        } catch(e) {
+            console.log(e)
+        }
+    }
+}
+
+let dump = async (uri, dbname) => {
     const mongo_connector = new MongoDBDuplexConnector({
         connection: { uri, dbname }
     })

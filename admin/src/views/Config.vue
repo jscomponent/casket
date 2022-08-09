@@ -55,6 +55,7 @@ export default {
       {key: 'lang', value: '', label: 'Languages'},
       {key: 'google-secret', value: '', label: 'Google Secret'},
       {key: 'google-folder', value: '', label: 'Google Folder'},
+      {key: 'backup-interval', value: '', label: 'Backup interval'}
     ]
   }),
   created() {
