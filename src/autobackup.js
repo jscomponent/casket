@@ -47,7 +47,7 @@ let backup = async () => {
             let credentials = JSON.parse(secret)
             let dbname = getdbname(uri)
             await dump(uri, dbname)
-            upload(credentials, folder, dbname + '-' + moment().format('YYYY-MM-DD HH.mm') + '.tar')
+            upload(credentials, folder, dbname + '-' + moment().format('YYYY-MM-DD HH:mm') + '.tar')
         } catch(e) {
             console.log(e)
         }
