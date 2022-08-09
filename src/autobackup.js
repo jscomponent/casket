@@ -5,9 +5,10 @@ import moment from 'moment'
 import { google } from 'googleapis'
 import { MongoTransferer, MongoDBDuplexConnector, LocalFileSystemDuplexConnector } from 'mongodb-snapshot';
 
-const minimumInterval = 1000 * 10
-const currentInterval = 1000 * 60
-const checkforChanges = 1000 * 10
+const minimumInterval = 1000 * 60
+const checkforChanges = 1000 * 60
+let currentInterval = 1000 * 60 * 24
+let backupTimer = null
 
 export default async () => {
     setInterval(async () => {
@@ -16,17 +17,15 @@ export default async () => {
         let obj = dotenv.parse(env)
         let interval = obj['backup-interval']
         interval = parseInt(interval)
-        if (interval < minimumInterval) return
+        if (interval < minimumInterval || isNaN(interval)) return
         else if (interval !== currentInterval) {
             currentInterval = interval
-            clearInterval(backupInterval)
-            backupInterval = setInterval(() => backup(), currentInterval)
+            if (backupTimer) clearTimeout(backupTimer)
             backup()
         }
     }, checkforChanges)
+    backup()
 }
-
-let backupInterval = setInterval(() => backup(), currentInterval)
 
 let getdbname = (uri) => {
     uri = uri.split('?')
@@ -35,16 +34,16 @@ let getdbname = (uri) => {
     return uri[uri.length-1]
 }
 
-let backup = () => {
+let backup = async () => {
     let env = ''
     try { env = fs.readFileSync(path.resolve('./.env'), { encoding: 'utf8' }) } catch (e) {}
     let obj = dotenv.parse(env)
     let uri = obj['mongodb']
-    let credentials = obj['google-secret']
+    let creds = obj['google-secret']
     let folder = obj['google-folder']
-    if (uri && credentials && folder) {
+    if (uri && creds && folder) {
         try {
-            let secret = Buffer.from(credentials, 'base64')
+            let secret = Buffer.from(creds, 'base64')
             let credentials = JSON.parse(secret)
             let dbname = getdbname(uri)
             await dump(uri, dbname)
@@ -53,6 +52,7 @@ let backup = () => {
             console.log(e)
         }
     }
+    backupTimer = setTimeout(() => { backup() }, currentInterval)
 }
 
 let dump = async (uri, dbname) => {
