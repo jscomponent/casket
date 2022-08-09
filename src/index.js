@@ -9,6 +9,8 @@ const cpus = os.cpus().length
 
 if (!cluster.isPrimary || cpus <= 1) {
 
+  if (cpus <=1) autobackup()
+
   if (process.env.port) app.set('port', process.env.port)
   const port = app.get('port')
 
