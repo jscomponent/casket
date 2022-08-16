@@ -32,7 +32,7 @@ let restrictAdminRole = async ctx => {
 
 let ensureUserRole = async ctx => {
   if (!ctx.params.provider) return ctx // server has no restrictions
-  if (!ctx.data.permissions) ctx.data.permissions = ctx.params?.user?.permissions || []
+  if (!ctx.data.permissions) ctx.data.permissions = []
   if (!ctx.data.permissions.includes('user')) ctx.data.permissions.push('user')
   return ctx
 }
