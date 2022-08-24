@@ -64,7 +64,7 @@ export default {
       let ready = localStorage.getItem('ready')
 
       try {
-        await app?.$io?.reAuthenticate()
+        if (authenticated) await app?.$io?.reAuthenticate()
       } catch(e) {
         authenticated = false
         localStorage.setItem('user', null)

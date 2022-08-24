@@ -1,0 +1,23 @@
+version: "3"
+services:
+  airportal:
+    container_name: casket
+    image: casket
+    restart: always
+    build: .
+    ports:
+      - "80:80"
+    links:
+      - mongo
+  mongo:
+    container_name: mongo
+    image: mongo
+    volumes:
+      - mongo_volume:/data/db
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+volumes:
+  mongo_volume:

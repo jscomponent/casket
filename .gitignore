@@ -116,8 +116,7 @@ $RECYCLE.BIN/
 *.lnk
 
 # Others
-lib/
-data/
-
+lib
+data
 
 backup.tar

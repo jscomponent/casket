@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>Setup</h1>
-    <div>
+    <div v-if="status === 'setup'">
       <label>MongoDB Connection URL</label>
       <input v-model="mongodb"/>
     </div>
@@ -23,8 +23,12 @@ export default {
   data: () => ({
     mongodb: '',
     email: '',
-    password: ''
+    password: '',
+    status: ''
   }),
+  async created() {
+    this.status = await this.io.service('settings').get('status')
+  },
   methods: {
     async setup(obj) {
       let response = await this.io.service('settings').create(obj)
