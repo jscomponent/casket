@@ -9,6 +9,7 @@ export default app => {
       status: { type: String }, // published, draft
       fields: { type: Object },
       instance: { type: Buffer },
+      dashboard: { type: Buffer },
       roles: { type: Object },
       owner: { type: String },
       owner_group: { type: String }

@@ -6,7 +6,8 @@ export class Types extends Service {
   
   async get(id, params) {
     let results = await super.get(id, params)
-    results.instance = results.instance.buffer
+    results.instance = results.instance?.buffer
+    results.dashboard = results.dashboard?.buffer
     results._id = results._id.toString()
     return results
   }
@@ -14,7 +15,8 @@ export class Types extends Service {
   async find(params) {
     let results = await super.find(params)
     results.data = results.data.map(d => {
-      if (d.instance) d.instance = d.instance.buffer
+      if (d.instance) d.instance = d.instance?.buffer
+      if (d.dashboard) d.dashboard = d.dashboard?.buffer
       d._id = d._id.toString()
       return d
     })

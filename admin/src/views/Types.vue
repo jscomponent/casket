@@ -50,6 +50,7 @@
         <th>Owner</th>
         <th>Owner group</th>
         <th>Instance</th>
+        <th>Dashboard</th>
         <th>Created</th>
         <th>Updated</th>
         <th>Actions</th>
@@ -67,6 +68,7 @@
         <td><input v-model="type.owner"></td>
         <td><input v-model="type.owner_group"></td>
         <td><textarea v-model="type.instance"/></td>
+        <td><textarea v-model="type.dashboard"/></td>
         <td>{{type.createdAt}}</td>
         <td>{{type.updatedAt}}</td>
         <td>
@@ -109,6 +111,7 @@ export default {
       obj.fields = obj.fields ? JSON.parse(obj.fields) : {}
       obj.roles = obj.roles ? JSON.parse(obj.roles) : {}
       obj.instance = new TextEncoder().encode(obj.instance).buffer
+      obj.dashboard = new TextEncoder().encode(obj.dashboard).buffer
       await this.io.service('types/any').create(obj)
       this.clear()
       this.list()
@@ -128,6 +131,7 @@ export default {
         if (t.fields) t.fields = JSON.stringify(t.fields)
         if (t.roles) t.roles = JSON.stringify(t.roles)
         t.instance = new TextDecoder().decode(t.instance)
+        t.dashboard = new TextDecoder().decode(t.dashboard)
         return t
       })
       this.$emit('list')
@@ -140,7 +144,8 @@ export default {
         status: type.status,
         fields: type.fields ? JSON.parse(type.fields) : {},
         roles: type.roles ? JSON.parse(type.roles) : {},
-        instance: new TextEncoder().encode(type.instance).buffer,
+        instance: new TextEncoder().encode(type?.instance).buffer,
+        dashboard: new TextEncoder().encode(type?.dashboard).buffer,
         owner: type.owner,
         owner_group: type.owner_group
       })
