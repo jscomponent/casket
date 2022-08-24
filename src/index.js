@@ -3,13 +3,13 @@ import cluster from 'cluster'
 import os from 'os'
 import logger from './logger.js'
 import app from './app.js'
-import autobackup from './autobackup.js'
+import initialize from './initialize.js'
 
 const cpus = os.cpus().length
 
 if (!cluster.isPrimary || cpus <= 1) {
 
-  if (cpus <=1) autobackup()
+  if (cpus <=1) initialize()
 
   if (process.env.port) app.set('port', process.env.port)
   const port = app.get('port')
@@ -30,7 +30,7 @@ if (!cluster.isPrimary || cpus <= 1) {
 
 } else {
 
-  autobackup()
+  initialize()
   for (let i = 0; i < cpus; i++) {
     cluster.fork()
   }
