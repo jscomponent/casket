@@ -40,7 +40,8 @@
     "docbuild": "docker compose up -d --build",
     "docstart": "docker compose start",
     "docstop": "docker compose stop",
-    "docremove": "docker compose down -v"
+    "docremove": "docker compose down -v",
+    "doc": "docker exec -it casket bash"
   },
   "standard": {
     "env": [
