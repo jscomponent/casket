@@ -12,7 +12,7 @@ RUN npm install
 RUN npm install pm2 -g
 #copying the source code of Application into the container dir
 COPY . /usr/casket
-RUN rm /usr/casket/.env
+RUN rm -f /usr/casket/.env
 RUN mv /usr/casket/.env.docker /usr/casket/.env
 RUN cd ./admin && npm i && npm run build
 #container exposed network port number
