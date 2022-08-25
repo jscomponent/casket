@@ -75,32 +75,32 @@ export default () => {
         })
     }).listen(process.env.proxyport || 80, console.log('Proxy listening on http://localhost:' + process.env.proxyport || 80))
 
-    https.createServer({}, async (req, res) => {
-        let options = {}
-        let target = await router(req)
-        options.target = target
-        if (fs.existsSync(path.resolve('./domains/' + options.target?.host + '/fullchain.pem'))) {
-            options.ssl = {
-                key: fs.readFileSync(path.resolve('./domains/' + options.target?.host + '/privkey.pem'), 'ascii'),
-                cert: fs.readFileSync(path.resolve('./domains/' + options.target?.host + '/fullchain.pem'), 'ascii')
+    https.createServer({
+        SNICallback(domain) {
+            if (fs.existsSync(path.resolve('./domains/' + domain + '/fullchain.pem'))) {
+                return tls.createSecureContext({
+                    key: fs.readFileSync(path.resolve('./domains/' + domain + '/privkey.pem'), 'ascii'),
+                    cert: fs.readFileSync(path.resolve('./domains/' + domain + '/fullchain.pem'), 'ascii')
+                })
+            } else {
+                return tls.createSecureContext({
+                    key: fs.readFileSync(path.resolve('./server.key'), 'ascii'),
+                    cert: fs.readFileSync(path.resolve('./server.crt'), 'ascii')    
+                })
             }
-        }
-        proxy.web(req, res, options, e => {
+        },
+        key: fs.readFileSync(path.resolve('./server.key'), 'ascii'),
+        cert: fs.readFileSync(path.resolve('./server.crt'), 'ascii')     
+    }, async (req, res) => {
+        let target = await router(req)
+        proxy.web(req, res, { target }, e => {
             proxy.web(req, res, { target: { host: 'localhost', port: 8001 } }, err => {
                 console.log('err', err)
             })
         })
     }).on('upgrade', async (req, socket, head) => {
-        let options = {}
         let target = await router(req)
-        options.target = target
-        if (fs.existsSync(path.resolve('./domains/' + options.target?.host + '/fullchain.pem'))) {
-            options.ssl = {
-                key: fs.readFileSync(path.resolve('./domains/' + options.target?.host + '/privkey.pem'), 'ascii'),
-                cert: fs.readFileSync(path.resolve('./domains/' + options.target?.host + '/fullchain.pem'), 'ascii')
-            }
-        }
-        proxy.ws(req, socket, head, options, e => {
+        proxy.ws(req, socket, head, { target }, e => {
             proxy.ws(req, socket, head, { target: { host: 'localhost', port: 8001 } }, err => {
                 console.log('err', err)
             })
