@@ -16,6 +16,6 @@ RUN rm -f /usr/casket/.env
 RUN mv /usr/casket/.env.docker /usr/casket/.env
 RUN cd ./admin && npm i && npm run build
 #container exposed network port number
-EXPOSE 80
+EXPOSE 80 443
 #command to run within the container
 CMD ["pm2-runtime", "src/index.js"]
