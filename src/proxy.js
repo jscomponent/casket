@@ -1,5 +1,6 @@
 import http from 'http'
 import https from 'https'
+import tls from 'tls'
 import fs from 'fs'
 import path from 'path'
 import url from 'url'
