@@ -34,6 +34,7 @@ export default () => {
 
     let sites = async () => {
         if (process.env.mongodb) {
+            /*
             await mongoose.connect(process.env.mongodb)
             let domain = mongoose.models['types/domains'] || mongoose.model('types/domains', {
                 match: { type: String },
@@ -41,6 +42,7 @@ export default () => {
                 port: { type: Number }
             })
             return await domain.find()
+            */
         }
         return []
     }
@@ -77,22 +79,25 @@ export default () => {
     }).listen(process.env.proxyport || 80, console.log('Proxy listening on http://localhost:' + process.env.proxyport || 80))
 
     https.createServer({
-        SNICallback(domain) {
+        SNICallback(domain, cb) {
+            let ctx = null
             if (fs.existsSync(path.resolve('./domains/' + domain + '/fullchain.pem'))) {
-                return tls.createSecureContext({
+                ctx = tls.createSecureContext({
                     key: fs.readFileSync(path.resolve('./domains/' + domain + '/privkey.pem'), 'ascii'),
                     cert: fs.readFileSync(path.resolve('./domains/' + domain + '/fullchain.pem'), 'ascii')
                 })
             } else {
-                return tls.createSecureContext({
+                ctx = tls.createSecureContext({
                     key: fs.readFileSync(path.resolve('./server.key'), 'ascii'),
                     cert: fs.readFileSync(path.resolve('./server.crt'), 'ascii')    
                 })
             }
+            cb(null, ctx)
         },
         key: fs.readFileSync(path.resolve('./server.key'), 'ascii'),
         cert: fs.readFileSync(path.resolve('./server.crt'), 'ascii')     
     }, async (req, res) => {
+        console.log('ssl ...')
         let target = await router(req)
         proxy.web(req, res, { target }, e => {
             proxy.web(req, res, { target: { host: 'localhost', port: 8001 } }, err => {
@@ -106,6 +111,6 @@ export default () => {
                 console.log('err', err)
             })
         })
-    }).listen(443, console.log('Proxy listening on https://localhost'))
+    }).listen(process.env.proxyportssl || 443, console.log('Proxy listening on https://localhost'))
 
 }
