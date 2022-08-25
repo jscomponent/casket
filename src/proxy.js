@@ -54,7 +54,7 @@ export default () => {
         if (host.startsWith('hub.')) return { host: 'localhost', port: process.env.port }
         domains.forEach(site => {
             if (host === site.match) route = { host: site.host || 'localhost', port: site.port }
-            else if (site.match === '*' && !route) route = { host: site.host || 'localhost', port: site.port }
+            //else if (site.match === '*' && !route) route = { host: site.host || 'localhost', port: site.port }
         })
         return route || { host: 'localhost', port: process.env.port }
     }
