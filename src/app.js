@@ -12,12 +12,14 @@ import middleware from './middleware/index.js'
 import appHooks from './app.hooks.js'
 import mongoose from './mongoose.js'
 import settings from './services/settings/settings.service.js'
+import letsencrypt from './letsencrypt.js'
 
 const app = express(feathers())
 
 app.configure(configuration())
 app.set('mongodb', process.env.mongodb)
 app.set('etag', false)
+app.set('letsencrypt', letsencrypt)
 
 app.use(helmet({ contentSecurityPolicy: false }))
 app.use(cors())

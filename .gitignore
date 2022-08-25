@@ -118,5 +118,7 @@ $RECYCLE.BIN/
 # Others
 lib
 data
+sites
+domains
 
 backup.tar

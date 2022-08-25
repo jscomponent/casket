@@ -37,10 +37,10 @@
     "update": "git pull; npm run unstartup; npm run delete; npm run start; npm run startup",
     "jest": "jest --forceExit",
     "build": "npm i && cd admin && npm i && npm run build",
-    "docbuild": "docker-compose up -d --build",
-    "docstart": "docker-compose start",
-    "docstop": "docker-compose stop",
-    "docremove": "docker-compose down -v"
+    "docbuild": "docker compose up -d --build",
+    "docstart": "docker compose start",
+    "docstop": "docker compose stop",
+    "docremove": "docker compose down -v"
   },
   "standard": {
     "env": [
@@ -58,7 +58,12 @@
     "@feathersjs/feathers": "^5.0.0-pre.22",
     "@feathersjs/socketio": "^5.0.0-pre.22",
     "@feathersjs/transport-commons": "^5.0.0-pre.22",
+    "@root/csr": "^0.8.1",
+    "@root/keypairs": "^0.10.3",
+    "@root/pem": "^1.0.4",
     "@socket.io/mongo-adapter": "^0.2.1",
+    "acme": "^3.0.3",
+    "acme-http-01-webroot": "^3.0.0",
     "axios": "^0.27.2",
     "compression": "^1.7.4",
     "connect-history-api-fallback": "^1.6.0",
@@ -77,6 +82,7 @@
     "mongodb-snapshot": "^1.4.1",
     "mongoose": "^6.3.5",
     "mongoose-intl": "^3.3.0",
+    "punycode": "^2.1.1",
     "serve-favicon": "^2.5.0",
     "winston": "^3.7.2"
   },

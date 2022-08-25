@@ -1,5 +1,8 @@
 import http from 'http'
 import https from 'https'
+import fs from 'fs'
+import path from 'path'
+import url from 'url'
 import httpProxy from 'http-proxy'
 import express from 'express'
 import mongoose from 'mongoose'
@@ -11,6 +14,17 @@ export default () => {
 
     let demo = express()
     demo.get('/', (req, res) => { res.send('Demo ^^ 🥷🏼') }).listen(8002)
+
+    let wellknown = express()
+    wellknown.use((req, res, next) => {
+        let domain = req.headers.host
+        let host = domain.split(':')[0]
+        if (req.path?.startsWith('/.well-known')) {
+            return res.sendFile(path.resolve('./domains/' + host + req.path))
+        }
+        next()
+    })
+    wellknown.listen(8003)
 
     let proxy = httpProxy.createProxyServer({})
     proxy.on('proxyReq', (proxyReq, req, res, options) => {
@@ -35,6 +49,8 @@ export default () => {
         let host = domain.split(':')[0]
         let domains = await sites()
         let route = null
+        let path = url.parse(req.url, true).pathname
+        if (path.startsWith('/.well-known')) return { host: 'localhost', port: 8003 }
         if (host.startsWith('hub.')) return { host: 'localhost', port: process.env.port }
         domains.forEach(site => {
             if (host === site.match) route = { host: site.host || 'localhost', port: site.port }
@@ -57,16 +73,16 @@ export default () => {
                 console.log('err', err)
             })
         })
-    }).listen(80, console.log('Proxy listening on http://localhost'))
+    }).listen(process.env.proxyport || 80, console.log('Proxy listening on http://localhost:' + process.env.proxyport || 80))
 
     https.createServer({}, async (req, res) => {
         let options = {}
         let target = await router(req)
         options.target = target
-        if (!'sslexists') {
+        if (fs.existsSync(path.resolve('./domains/' + options.target?.host + '/fullchain.pem'))) {
             options.ssl = {
-                key: fs.readFileSync('valid-ssl-key.pem', 'utf8'),
-                cert: fs.readFileSync('valid-ssl-cert.pem', 'utf8')
+                key: fs.readFileSync(path.resolve('./domains/' + options.target?.host + '/privkey.pem'), 'ascii'),
+                cert: fs.readFileSync(path.resolve('./domains/' + options.target?.host + '/fullchain.pem'), 'ascii')
             }
         }
         proxy.web(req, res, options, e => {
@@ -75,8 +91,16 @@ export default () => {
             })
         })
     }).on('upgrade', async (req, socket, head) => {
+        let options = {}
         let target = await router(req)
-        proxy.ws(req, socket, head, { target }, e => {
+        options.target = target
+        if (fs.existsSync(path.resolve('./domains/' + options.target?.host + '/fullchain.pem'))) {
+            options.ssl = {
+                key: fs.readFileSync(path.resolve('./domains/' + options.target?.host + '/privkey.pem'), 'ascii'),
+                cert: fs.readFileSync(path.resolve('./domains/' + options.target?.host + '/fullchain.pem'), 'ascii')
+            }
+        }
+        proxy.ws(req, socket, head, options, e => {
             proxy.ws(req, socket, head, { target: { host: 'localhost', port: 8001 } }, err => {
                 console.log('err', err)
             })
