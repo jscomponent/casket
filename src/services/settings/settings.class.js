@@ -3,9 +3,11 @@ import mongoose from 'mongoose'
 import fs from 'fs'
 import path from 'path'
 import dotenv from 'dotenv'
+import { execSync } from 'child_process'
 import registerTypes from '../../register-types.js'
 import adapter from '../../socket-adapter.js'
 import middleware from '../../middleware/index.js'
+import si from 'systeminformation'
 
 export class Settings {
 
@@ -25,6 +27,11 @@ export class Settings {
         return 'ready'
       }
       return 'setup'
+    } else if (id === 'server') {
+      let fsSize = await si.fsSize()
+      let mem = await si.mem()
+      let npm = 'v' + execSync('npm -v').toString().trim()
+      return { mem, fsSize, node: process.version, npm }
     } else {
       let env = ''
       // eslint-disable-next-line no-empty

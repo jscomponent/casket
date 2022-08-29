@@ -12,7 +12,7 @@ $io.configure(socketio(socket))
 $io.configure(auth())
 
 export default {
-    install(app) {
+    async install(app) {
         localStorage.removeItem('ready')
         localStorage.removeItem('user')
         $io.service('settings').get('status').then(response => {
