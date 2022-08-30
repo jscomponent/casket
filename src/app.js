@@ -26,7 +26,7 @@ app.use(cors())
 app.use(compress())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.use(favicon(path.resolve('./admin/dist/favicon.svg')))
+app.use(favicon(path.resolve('./admin/favicon.svg')))
 app.use('/', express.static(app.get('public')))
 app.use((req, res, next) => {
   res.header('Cross-Origin-Opener-Policy', 'cross-origin')
@@ -46,7 +46,7 @@ if (app.get('mongodb')) {
 app.configure(settings)
 
 app.get('*', (req, res) => {
-  let p = path.resolve('./admin/dist/index.html')
+  let p = path.resolve('./admin/index.html')
   try {
     res.sendFile(p)
   } catch (error) {

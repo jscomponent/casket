@@ -8,7 +8,7 @@ import httpProxy from 'http-proxy'
 import express from 'express'
 import mongoose from 'mongoose'
 
-export default () => {
+export default (app) => {
 
     let notFound = express()
     notFound.get('/', (req, res) => { res.send('404 Not Found :/') }).listen(8001)

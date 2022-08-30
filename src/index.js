@@ -9,7 +9,7 @@ const cpus = os.cpus().length
 
 if (!cluster.isPrimary || cpus <= 1) {
 
-  if (cpus <=1) initialize()
+  if (cpus <=1) initialize(app)
 
   if (process.env.port) app.set('port', process.env.port)
   const port = app.get('port')
@@ -30,7 +30,7 @@ if (!cluster.isPrimary || cpus <= 1) {
 
 } else {
 
-  initialize()
+  initialize(app)
   for (let i = 0; i < cpus; i++) {
     cluster.fork()
   }

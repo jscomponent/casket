@@ -1,7 +1,7 @@
 {
   "host": "localhost",
   "port": 80,
-  "public": "./admin/dist/",
+  "public": "./admin/",
   "paginate": {
     "default": 10,
     "max": 50

@@ -14,7 +14,6 @@ RUN npm install pm2 -g
 COPY . /usr/casket
 RUN rm -f /usr/casket/.env
 RUN mv /usr/casket/.env.docker /usr/casket/.env
-RUN cd ./admin && npm i && npm run build
 #container exposed network port number
 EXPOSE 80 443
 #command to run within the container
