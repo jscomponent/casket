@@ -3,6 +3,8 @@ services:
   airportal:
     container_name: casket
     image: casket
+    volumes:
+      - casket_volume:/usr/casket_volume
     restart: always
     build: .
     ports:
@@ -22,3 +24,4 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: example
 volumes:
   mongo_volume:
+  casket_volume:

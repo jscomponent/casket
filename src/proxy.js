@@ -21,7 +21,7 @@ export default () => {
         let domain = req.headers.host
         let host = domain.split(':')[0]
         if (req.path?.startsWith('/.well-known')) {
-            return res.sendFile(path.resolve('./domains/' + host + req.path))
+            return res.sendFile(path.resolve('../casket_volume/domains/' + host + req.path))
         }
         next()
     })
@@ -80,10 +80,10 @@ export default () => {
     https.createServer({
         SNICallback(domain, cb) {
             let ctx = null
-            if (fs.existsSync(path.resolve('./domains/' + domain + '/fullchain.pem'))) {
+            if (fs.existsSync(path.resolve('../casket_volume/domains/' + domain + '/fullchain.pem'))) {
                 ctx = tls.createSecureContext({
-                    key: fs.readFileSync(path.resolve('./domains/' + domain + '/privkey.pem'), 'ascii'),
-                    cert: fs.readFileSync(path.resolve('./domains/' + domain + '/fullchain.pem'), 'ascii')
+                    key: fs.readFileSync(path.resolve('../casket_volume/domains/' + domain + '/privkey.pem'), 'ascii'),
+                    cert: fs.readFileSync(path.resolve('../casket_volume/domains/' + domain + '/fullchain.pem'), 'ascii')
                 })
             } else {
                 ctx = tls.createSecureContext({

@@ -28,10 +28,15 @@ export class Settings {
       }
       return 'setup'
     } else if (id === 'server') {
+      let size = 0
+      let used = 0
+      let diskLayout = await si.diskLayout()
+      diskLayout.forEach(l => size += l.size)
       let fsSize = await si.fsSize()
+      fsSize.forEach(d => used += d.used)
       let mem = await si.mem()
       let npm = 'v' + execSync('npm -v').toString().trim()
-      return { mem, fsSize, node: process.version, npm }
+      return { mem, size, used, node: process.version, npm }
     } else {
       let env = ''
       // eslint-disable-next-line no-empty
