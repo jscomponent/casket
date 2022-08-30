@@ -36,10 +36,8 @@
     "unstartup": "pm2 unstartup > unstartup.tmp; tail -n 1 unstartup.tmp > unstartup.sh; sh unstartup.sh; rm unstartup.tmp",
     "update": "git pull; npm run unstartup; npm run delete; npm run start; npm run startup",
     "jest": "jest --forceExit",
-    "docbuild": "docker compose up -d --build",
-    "docstart": "docker compose start",
-    "docstop": "docker compose stop",
-    "docremove": "docker compose down -v",
+    "build": "docker compose up -d --build",
+    "destruct": "docker compose down -v",
     "doc": "docker exec -it casket bash"
   },
   "standard": {
