@@ -27,6 +27,22 @@ export default (app) => {
     })
     wellknown.listen(8003)
 
+    let staticserver = express()
+    staticserver.use((req, res, next) => {
+        let domain = req.headers.host
+        let host = domain.split(':')[0]
+        express.static(path.resolve('../casket_volume/sites/' + host + '/public' + req.path))(req, res, next)
+    })
+    staticserver.get('*', (req, res) => {
+        let p = path.resolve('../casket_volume/sites/' + host + '/public/index.html')
+        try {
+            res.sendFile(p)
+        } catch (error) {
+            res.json({ success: false, message: 'Something went wrong', path: p })
+        }
+    })
+    staticserver.listen(8004)
+
     let proxy = httpProxy.createProxyServer({})
     proxy.on('proxyReq', (proxyReq, req, res, options) => {
         proxyReq.setHeader('X-Special-Proxy-Header', 'foobar')
@@ -54,6 +70,9 @@ export default (app) => {
         let path = url.parse(req.url, true).pathname
         if (path.startsWith('/.well-known')) return { host: 'localhost', port: 8003 }
         if (host.startsWith('hub.')) return { host: 'localhost', port: process.env.port }
+        if (fs.existsSync(path.resolve('../casket_volume/sites/' + host + '/public'))) {
+            return { host: 'localhost', port: 8004 }
+        }
         domains.forEach(site => {
             if (host === site.match) route = { host: site.host || 'localhost', port: site.port }
             else if (site.match === '*' && !route) route = { host: site.host || 'localhost', port: site.port }
