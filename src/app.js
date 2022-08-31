@@ -2,6 +2,7 @@ import path from 'path'
 import favicon from 'serve-favicon'
 import compress from 'compression'
 import helmet from 'helmet'
+import tar from 'tar-fs'
 import cors from 'cors'
 import logger from './logger.js'
 import feathers from '@feathersjs/feathers'
@@ -20,6 +21,7 @@ app.configure(configuration())
 app.set('mongodb', process.env.mongodb)
 app.set('etag', false)
 app.set('letsencrypt', letsencrypt)
+app.set('tar', tar)
 
 app.use(helmet({ contentSecurityPolicy: false }))
 app.use(cors())
