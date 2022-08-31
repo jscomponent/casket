@@ -32,8 +32,11 @@ export default (app) => {
         let domain = req.headers.host
         let host = domain.split(':')[0]
         let file = path.resolve('../casket_volume/sites/' + host + '/public' + req.path)
-        if (fs.existsSync(file)) return res.sendFile(file)
-        next()
+        try {
+            res.sendFile(file)
+        } catch (error) {
+            next()
+        }
     })
     staticserver.get('*', (req, res) => {
         let p = path.resolve('../casket_volume/sites/' + host + '/public/index.html')
