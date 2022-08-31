@@ -70,9 +70,6 @@ export default (app) => {
         let path = url.parse(req.url, true).pathname
         if (path.startsWith('/.well-known')) return { host: 'localhost', port: 8003 }
         if (host.startsWith('hub.')) return { host: 'localhost', port: process.env.port }
-        if (fs.existsSync(path.resolve('../casket_volume/sites/' + host + '/public'))) {
-            return { host: 'localhost', port: 8004 }
-        }
         domains.forEach(site => {
             if (host === site.match) route = { host: site.host || 'localhost', port: site.port }
             else if (site.match === '*' && !route) route = { host: site.host || 'localhost', port: site.port }
