@@ -29,6 +29,7 @@ app.use(compress())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use((req, res, next) => {
+  res.header('Cross-Origin-Embedder-Policy', 'cross-origin')
   res.header('Cross-Origin-Opener-Policy', 'cross-origin')
   res.header('Cross-Origin-Resource-Policy', 'cross-origin')
   next()
