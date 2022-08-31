@@ -20,6 +20,7 @@ export default (app) => {
     wellknown.use((req, res, next) => {
         let domain = req.headers.host
         let host = domain.split(':')[0]
+        if (host.startsWith('www.')) host = host.replace('www.', '')
         if (req.path?.startsWith('/.well-known')) {
             return res.sendFile(path.resolve('../casket_volume/domains/' + host + req.path))
         }
@@ -31,6 +32,7 @@ export default (app) => {
     staticserver.use((req, res, next) => {
         let domain = req.headers.host
         let host = domain.split(':')[0]
+        if (host.startsWith('www.')) host = host.replace('www.', '')
         let file = path.resolve('../casket_volume/sites/' + host + '/public' + req.path)
         if (fs.existsSync(file)) return res.sendFile(file)
         next()
@@ -38,6 +40,7 @@ export default (app) => {
     staticserver.get('*', (req, res) => {
         let domain = req.headers.host
         let host = domain.split(':')[0]
+        if (host.startsWith('www.')) host = host.replace('www.', '')
         let p = path.resolve('../casket_volume/sites/' + host + '/public/index.html')
         try {
             res.sendFile(p)
