@@ -31,19 +31,13 @@ export default (app) => {
     staticserver.use((req, res, next) => {
         let domain = req.headers.host
         let host = domain.split(':')[0]
-        try {
-            let file = path.resolve('../casket_volume/sites/' + host + '/public' + req.path)
-            res.sendFile(file)
-        } catch (e) {
-            let p = path.resolve('../casket_volume/sites/' + host + '/public/index.html')
-            try {
-                res.sendFile(p)
-            } catch (error) {
-                res.json({ success: false, message: 'Something went wrong', path: p })
-            }
-        }
+        let file = path.resolve('../casket_volume/sites/' + host + '/public' + req.path)
+        if (fs.existsSync(file)) return res.sendFile(file)
+        next()
     })
     staticserver.get('*', (req, res) => {
+        let domain = req.headers.host
+        let host = domain.split(':')[0]
         let p = path.resolve('../casket_volume/sites/' + host + '/public/index.html')
         try {
             res.sendFile(p)
