@@ -8,6 +8,7 @@ import registerTypes from '../../register-types.js'
 import adapter from '../../socket-adapter.js'
 import middleware from '../../middleware/index.js'
 import si from 'systeminformation'
+import checkDiskSpace from 'check-disk-space'
 
 export class Settings {
 
@@ -36,6 +37,9 @@ export class Settings {
       fsSize.forEach(d => used += d.used)
       let mem = await si.mem()
       let npm = 'v' + execSync('npm -v').toString().trim()
+      let ds = await checkDiskSpace(path.resolve('./'))
+      size = ds.size
+      used = ds.size - ds.free
       return { mem, size, used, node: process.version, npm }
     } else {
       let env = ''
