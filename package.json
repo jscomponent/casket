@@ -63,6 +63,7 @@
     "acme": "^3.0.3",
     "acme-http-01-webroot": "^3.0.0",
     "axios": "^0.27.2",
+    "check-disk-space": "^3.3.1",
     "compression": "^1.7.4",
     "connect-history-api-fallback": "^1.6.0",
     "cors": "^2.8.5",
