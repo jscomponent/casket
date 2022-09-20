@@ -1,7 +1,5 @@
-import * as feathersAuthentication from '@feathersjs/authentication'
+import { authenticate } from '@feathersjs/authentication'
 import checkPermissions from 'feathers-permissions'
-
-const { authenticate } = feathersAuthentication.hooks
 
 let permissions = [
   checkPermissions({
@@ -11,7 +9,7 @@ let permissions = [
 
 export default {
   before: {
-    all: [ authenticate('jwt'), ...permissions],
+    all: [authenticate('jwt'), ...permissions],
     find: [],
     get: [],
     create: [],

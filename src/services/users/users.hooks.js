@@ -1,12 +1,10 @@
-import * as feathersAuthentication from '@feathersjs/authentication'
 import * as local from '@feathersjs/authentication-local'
-import * as cmn from 'feathers-hooks-common'
-import checkPermissions from 'feathers-permissions'
+import { authenticate } from '@feathersjs/authentication'
+import { iff } from 'feathers-hooks-common'
 import { setField } from 'feathers-authentication-hooks'
+import checkPermissions from 'feathers-permissions'
 
-const { authenticate } = feathersAuthentication.hooks
 const { hashPassword, protect } = local.hooks
-const { iff } = cmn.default
 
 let permissions = [
   checkPermissions({

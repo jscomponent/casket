@@ -1,6 +1,6 @@
 import { AuthenticationService, AuthenticationBaseStrategy, JWTStrategy } from '@feathersjs/authentication'
 import { LocalStrategy } from '@feathersjs/authentication-local'
-import { expressOauth } from '@feathersjs/authentication-oauth'
+import { oauth } from '@feathersjs/authentication-oauth'
 
 export default app => {
   const authentication = new AuthenticationService(app)
@@ -10,7 +10,7 @@ export default app => {
   authentication.register('anonymous', new AnonymousStrategy())
 
   app.use('/authentication', authentication)
-  app.configure(expressOauth())
+  app.configure(oauth())
 }
 
 class AnonymousStrategy extends AuthenticationBaseStrategy {

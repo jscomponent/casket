@@ -45,9 +45,9 @@ export class Types extends Service {
     let old = await this.get(id)
     let results = await super.update(id, data, params)
     await register(this.app, results)
-    if (results.slug) {
+    if (results.slug && old.slug !== results.slug) {
       let mongoClient = this.app.get('mongooseClient').connection.client
-      mongoClient.db().collection('types/' + old.slug).rename('types/' + results.slug)
+      await mongoClient.db().collection('types/' + old.slug).rename('types/' + results.slug)
     }
     return results
   }
@@ -55,9 +55,9 @@ export class Types extends Service {
   async patch(id, data, params) {
     let old = await this.get(id)
     let results = await super.patch(id, data, params)
-    if (results.slug) {
+    if (results.slug && old.slug !== results.slug) {
       let mongoClient = this.app.get('mongooseClient').connection.client
-      mongoClient.db().collection('types/' + old.slug).rename('types/' + results.slug)
+      await mongoClient.db().collection('types/' + old.slug).rename('types/' + results.slug)
     }
     await register(this.app, results)
     return results
@@ -66,12 +66,11 @@ export class Types extends Service {
   async remove(id, params) {
     let results = await super.remove(id, params)
     let mongoClient = this.app.get('mongooseClient').connection.client
-    mongoClient.db().dropCollection('types/' + results.slug)
+    await mongoClient.db().dropCollection('types/' + results.slug)
     return results
   }
 
-  async setup(app, path) {
+  async setup(app) {
     this.app = app
-    this.path = path
   }
 }
