@@ -9,7 +9,6 @@ import { promises as fs } from 'fs'
 
 export default async (maintainer = 'webmaster@example.com', domain = 'localhost', production = true) => {
     try {
-        let dir = 'domains/'
         let domains = [domain]
         domains = domains.map((name) => punycode.toASCII(name))
 
@@ -20,8 +19,8 @@ export default async (maintainer = 'webmaster@example.com', domain = 'localhost'
         let serverKey = serverKeypair.private
         let serverPem = await Keypairs.export({ jwk: serverKey })
 
-        await fs.mkdir(path.resolve('../casket_volume/' + dir + domain), {recursive: true})
-        await fs.writeFile(path.resolve('../casket_volume/' + dir + domain + '/privkey.pem'), serverPem, 'ascii')
+        await fs.mkdir(path.resolve('../casket_volume/domains/' + domain), {recursive: true})
+        await fs.writeFile(path.resolve('../casket_volume/domains/' + domain + '/privkey.pem'), serverPem, 'ascii')
 
         let acme = ACME.create({
             maintainerEmail: maintainer,
@@ -48,7 +47,7 @@ export default async (maintainer = 'webmaster@example.com', domain = 'localhost'
             csr,
             domains,
             challenges: {
-                'http-01': http01.create({ webroot: path.resolve('../casket_volume/' + dir + domain + '/.well-known/acme-challenge') }),
+                'http-01': http01.create({ webroot: path.resolve('../casket_volume/domains/' + domain + '/.well-known/acme-challenge') }),
                 /*'dns-01': {
                     async init(deps) {
                         console.log('deps', deps) // includes the http request object to use
@@ -71,7 +70,7 @@ export default async (maintainer = 'webmaster@example.com', domain = 'localhost'
         })
 
         let fullchain = pems.cert + '\n' + pems.chain + '\n'
-        await fs.writeFile(path.resolve('../casket_volume/' + dir + domain + '/fullchain.pem'), fullchain, 'ascii')
+        await fs.writeFile(path.resolve('../casket_volume/domains/' + domain + '/fullchain.pem'), fullchain, 'ascii')
         return true
     } catch (e) {
         console.log('err', e)
