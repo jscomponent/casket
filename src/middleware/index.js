@@ -9,7 +9,10 @@ import mongodb from 'mongodb'
 export default app => {
   let db = app.get('mongooseClient').connection.client.db()
   app.set('bucket', new mongodb.GridFSBucket(db, { bucketName: 'uploads' }))
-  if (!app.io) app.configure(socketio(io => adapter(io, app)))
+  if (!app.io) app.configure(socketio({
+    maxHttpBufferSize: 1e9, // def 1e6
+    pingTimeout: 60000 // def 20000
+  },io => adapter(io, app)))
   app.configure(services)
   app.configure(authentication)
   app.configure(channels)

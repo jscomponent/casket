@@ -43,7 +43,10 @@ if (app.get('mongodb')) {
   app.configure(mongoose)
   app.configure(middleware)
 } else {
-  app.configure(socketio())
+  app.configure(socketio({
+    maxHttpBufferSize: 1e9, // def 1e6
+    pingTimeout: 60000 // def 20000
+  }))
 }
 
 app.configure(settings)
