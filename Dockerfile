@@ -9,6 +9,7 @@ WORKDIR /usr/casket
 COPY package.json /usr/casket
 # installing the dependencies into the container
 RUN npm i
+RUN npm i vite -g
 RUN npm i pm2 -g
 RUN npm i forever -g
 # install text editors
