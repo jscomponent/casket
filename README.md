@@ -1,5 +1,9 @@
 # Casket CMS
 
+```bash
+systemctl enable docker
+```
+
 > Casket Content Management System - Built on [FeathersJS](https://feathersjs.com) using [MongoDB](https://mongodb.com) with [Mongoose](https://mongoosejs.com) and [Socket.IO](https://socket.io) 🔥
 
 ## Motivation
