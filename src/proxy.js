@@ -102,6 +102,7 @@ export default (app) => {
 
     https.createServer({
         SNICallback(domain, cb) {
+            if (domain.startsWith('www.')) domain = domain.replace('www.', '')
             let ctx = null
             if (fs.existsSync(path.resolve('../casket_volume/domains/' + domain + '/fullchain.pem'))) {
                 ctx = tls.createSecureContext({
