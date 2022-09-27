@@ -13,7 +13,8 @@
     "authStrategies": [
       "jwt",
       "local",
-      "anonymous"
+      "anonymous",
+      "oauth"
     ],
     "jwtOptions": {
       "header": {
@@ -27,6 +28,15 @@
     "local": {
       "usernameField": "email",
       "passwordField": "password"
+    },
+    "oauth": {
+      "redirect": "https://vueeco.com/admin/types",
+      "google": {
+        "key": "771440462377-sdn3hfi1gjppgk26h0r0frn84es4inpv.apps.googleusercontent.com",
+        "secret": "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",
+        "scope": ["openid", "email"],
+        "nonce": true
+      }
     }
   },
   "mongodb": ""
