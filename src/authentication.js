@@ -11,6 +11,7 @@ export default app => {
   authentication.register('google', new GoogleStrategy())
 
   app.set('strategy_google', GoogleStrategy)
+  app.set('oauth', oauth)
 
   app.use('/authentication', authentication)
   app.configure(oauth())
