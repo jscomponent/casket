@@ -32,6 +32,7 @@
     "oauth": {
       "redirect": "https://vueeco.com/admin/types",
       "defaults": {
+        "origin": "https://vueeco.com",
         "host": "vueeco.com",
         "protocol": "https",
         "transport": "session"
