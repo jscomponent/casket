@@ -32,15 +32,12 @@
     "oauth": {
       "redirect": "https://vueeco.com/admin/types",
       "defaults": {
-        "origin": "https://vueeco.com",
-        "host": "vueeco.com",
-        "protocol": "https",
-        "transport": "session"
+        "origin": "https://vueeco.com"
       },
       "google": {
         "key": "771440462377-sdn3hfi1gjppgk26h0r0frn84es4inpv.apps.googleusercontent.com",
         "secret": "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",
-        "scope": ["openid", "email", "profile"],
+        "scope": ["email", "profile", "openid"],
         "nonce": true
       }
     }
