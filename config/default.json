@@ -31,10 +31,15 @@
     },
     "oauth": {
       "redirect": "https://vueeco.com/admin/types",
+      "defaults": {
+        "host": "vueeco.com",
+        "protocol": "https",
+        "transport": "session"
+      },
       "google": {
         "key": "771440462377-sdn3hfi1gjppgk26h0r0frn84es4inpv.apps.googleusercontent.com",
         "secret": "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",
-        "scope": ["openid", "email"],
+        "scope": ["openid", "email", "profile"],
         "nonce": true
       }
     }
