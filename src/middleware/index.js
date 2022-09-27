@@ -14,7 +14,7 @@ export default app => {
     pingTimeout: 60000 // def 20000
   },io => adapter(io, app)))
   app.configure(services)
-  app.set('authconf', authentication)
+  // app.set('authconf', authentication)
   app.configure(authentication)
   app.configure(channels)
   registerTypes(app)
