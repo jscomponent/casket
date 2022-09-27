@@ -22,4 +22,4 @@ RUN mv /usr/casket/.env.docker /usr/casket/.env
 # container exposed network port number
 EXPOSE 80 443
 # command to run within the container
-CMD ["pm2-runtime", "src/index.js"]
+CMD ["pm2-runtime", "src/index.js", "-i", "max"]

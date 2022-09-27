@@ -1,38 +1,23 @@
 import 'dotenv/config'
-import cluster from 'cluster'
-import os from 'os'
 import logger from './logger.js'
 import app from './app.js'
 import initialize from './initialize.js'
 
-const cpus = os.cpus().length
+initialize(app)
 
-if (!cluster.isPrimary || cpus <= 1) {
+if (process.env.port) app.set('port', process.env.port)
+const port = app.get('port')
 
-  if (cpus <=1) initialize(app)
+app.listen(port).then(server => {
 
-  if (process.env.port) app.set('port', process.env.port)
-  const port = app.get('port')
+  process.on('unhandledRejection', (reason, p) =>
+    logger.error('Unhandled Rejection at: Promise ', p, reason)
+  )
 
-  app.listen(port).then(server => {
+  server.on('listening', () =>
+    logger.info('Feathers application started on http://%s:%d', app.get('host'), port)
+  )
 
-    process.on('unhandledRejection', (reason, p) =>
-      logger.error('Unhandled Rejection at: Promise ', p, reason)
-    )
-
-    server.on('listening', () =>
-      logger.info('Feathers application started on http://%s:%d', app.get('host'), port)
-    )
-
-  }).catch(e => {
-    console.log('could not listen on port', e)
-  })
-
-} else {
-
-  initialize(app)
-  for (let i = 0; i < cpus; i++) {
-    cluster.fork()
-  }
-
-}
+}).catch(e => {
+  console.log('could not listen on port', e)
+})
