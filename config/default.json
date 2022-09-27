@@ -30,13 +30,13 @@
       "passwordField": "password"
     },
     "oauth": {
-      "redirect": "https://vueeco.com/admin/types",
+      "redirect": "",
       "defaults": {
-        "origin": "https://vueeco.com"
+        "origin": ""
       },
       "google": {
-        "key": "771440462377-sdn3hfi1gjppgk26h0r0frn84es4inpv.apps.googleusercontent.com",
-        "secret": "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",
+        "key": "",
+        "secret": "",
         "scope": ["email", "profile", "openid"],
         "nonce": true
       }
