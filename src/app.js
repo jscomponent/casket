@@ -18,6 +18,7 @@ import letsencrypt from './letsencrypt.js'
 
 const app = express(feathers())
 
+console.log('redis connected to', process.env.redis || 'redis://localhost:6379')
 app.configure(
   sync({
     uri: process.env.redis || 'redis://localhost:6379',
