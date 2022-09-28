@@ -28,6 +28,11 @@ app.configure(sync.redis({
   key: process.env.name || 'feathers-sync'
 }))
 
+app.sync = {
+  serialize: data => data,
+  deserialize: data => data
+}
+
 app.configure(configuration())
 app.set('mongodb', process.env.mongodb)
 app.set('etag', false)
