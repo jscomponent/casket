@@ -9,6 +9,7 @@ import feathers from '@feathersjs/feathers'
 import configuration from '@feathersjs/configuration'
 import express from '@feathersjs/express'
 import socketio from '@feathersjs/socketio'
+import sync from 'feathers-sync'
 import middleware from './middleware/index.js'
 import appHooks from './app.hooks.js'
 import mongoose from './mongoose.js'
@@ -16,6 +17,12 @@ import settings from './services/settings/settings.service.js'
 import letsencrypt from './letsencrypt.js'
 
 const app = express(feathers())
+
+app.configure(
+  sync({
+    uri: process.env.redis || 'redis://localhost:6379',
+  })
+)
 
 app.configure(configuration())
 app.set('mongodb', process.env.mongodb)

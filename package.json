@@ -73,6 +73,7 @@
     "feathers-hooks-common": "^6.1.5",
     "feathers-mongoose": "^8.5.1",
     "feathers-permissions": "^2.1.4",
+    "feathers-sync": "^3.0.1",
     "googleapis": "^105.0.0",
     "helmet": "^5.1.0",
     "http-proxy": "^1.18.1",

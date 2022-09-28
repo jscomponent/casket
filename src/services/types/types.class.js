@@ -1,4 +1,3 @@
-import register from '../../register-type.js'
 import pkg from 'feathers-mongoose'
 const { Service } = pkg
 
@@ -37,14 +36,12 @@ export class Types extends Service {
     if (!data.owner) data.owner = '_id'
     if (!data.owner_group) data.owner_group = 'user_id'
     let results = await super.create(data, params)
-    await register(this.app, results)
     return results
   }
 
   async update(id, data, params) {
     let old = await this.get(id)
     let results = await super.update(id, data, params)
-    await register(this.app, results)
     if (results.slug && old.slug !== results.slug) {
       let mongoClient = this.app.get('mongooseClient').connection.client
       await mongoClient.db().collection('types/' + old.slug).rename('types/' + results.slug)
@@ -59,7 +56,6 @@ export class Types extends Service {
       let mongoClient = this.app.get('mongooseClient').connection.client
       await mongoClient.db().collection('types/' + old.slug).rename('types/' + results.slug)
     }
-    await register(this.app, results)
     return results
   }
 
