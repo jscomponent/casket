@@ -1,6 +1,9 @@
 version: "3"
 services:
   airportal:
+    depends_on:
+      - mongo
+      - cache
     container_name: casket
     image: casket
     volumes:
