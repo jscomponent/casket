@@ -41,7 +41,6 @@ class GithubStrategy extends OAuthStrategy {
       })
       if (emails.data.length) user.data.email =  emails.data[0]?.email
     }
-    console.log(user.data)
     return user.data
   }
   async getEntityData(profile) {
