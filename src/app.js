@@ -15,23 +15,13 @@ import appHooks from './app.hooks.js'
 import mongoose from './mongoose.js'
 import settings from './services/settings/settings.service.js'
 import letsencrypt from './letsencrypt.js'
-import { createClient } from 'redis'
 
 const app = express(feathers())
 
-const redisClient = createClient({
-  url: process.env.redis || 'redis://localhost:6379'
-})
-
-app.configure(sync.redis({
-  redisClient,
+app.configure(sync({
+  uri: process.env.redis || 'redis://localhost:6379',
   key: process.env.name || 'feathers-sync'
 }))
-
-app.sync = {
-  serialize: data => data,
-  deserialize: data => data
-}
 
 app.configure(configuration())
 app.set('mongodb', process.env.mongodb)
