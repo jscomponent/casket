@@ -6,8 +6,6 @@ import hooks from './types.hooks.js'
 export default app => {
 
   let registrationListener = async (data) => {
-    console.log('register ---')
-    console.log(data)
     if (data.instance) data.instance = Buffer.from(data.instance)
     if (data.dashboard) data.dashboard = Buffer.from(data.dashboard)
     await register(app, data)
