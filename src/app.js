@@ -8,7 +8,6 @@ import logger from './logger.js'
 import feathers from '@feathersjs/feathers'
 import configuration from '@feathersjs/configuration'
 import express from '@feathersjs/express'
-import session from 'cookie-session'
 import socketio from '@feathersjs/socketio'
 import sync from 'feathers-sync'
 import middleware from './middleware/index.js'
@@ -16,11 +15,18 @@ import appHooks from './app.hooks.js'
 import mongoose from './mongoose.js'
 import settings from './services/settings/settings.service.js'
 import letsencrypt from './letsencrypt.js'
-import { randomUUID } from 'crypto'
+import { createClient } from 'redis'
 
 const app = express(feathers())
 
-app.configure(sync({ uri: process.env.redis || 'redis://localhost:6379' }))
+const redisClient = createClient({
+  url: process.env.redis || 'redis://localhost:6379'
+})
+
+app.configure(sync.redis({
+  redisClient,
+  key: process.env.name || 'feathers-sync'
+}))
 
 app.configure(configuration())
 app.set('mongodb', process.env.mongodb)
@@ -28,14 +34,6 @@ app.set('etag', false)
 app.set('letsencrypt', letsencrypt)
 app.set('tar', tar)
 
-app.use(session({
-  genid() {
-    return randomUUID() // so redis does not conflict
-  },
-  secret: 'feathers',
-  resave: true,
-  saveUninitialized: true
-}))
 app.use(helmet({ contentSecurityPolicy: false }))
 app.use(cors())
 app.use(compress())
