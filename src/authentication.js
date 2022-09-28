@@ -26,20 +26,12 @@ class AnonymousStrategy extends AuthenticationBaseStrategy {
 }
 
 class GithubStrategy extends OAuthStrategy {
-  async getProfile (authResult) {
-    const accessToken = authResult.access_token
-    const { data } = await axios.get('https://api.github.com/user', {
-      headers: {
-        authorization: `Bearer ${accessToken}`
-      }
-    })
-    return data
-  }
   async getEntityData(profile) {
     const baseData = await super.getEntityData(profile)
     return {
       ...baseData,
-      name:  profile.name,
+      name: profile.login,
+      avatar: profile.avatar_url,
       email: profile.email
     }
   }
