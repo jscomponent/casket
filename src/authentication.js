@@ -39,7 +39,7 @@ class GithubStrategy extends OAuthStrategy {
           authorization: `Bearer ${accessToken}`
         }
       })
-      if (emails.data.length) user.data.email =  emails.data[0]
+      if (emails.data.length) user.data.email =  emails.data[0]?.email
     }
     console.log(user.data)
     return user.data
