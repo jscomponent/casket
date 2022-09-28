@@ -36,6 +36,8 @@ export class Types extends Service {
     if (!data.owner) data.owner = '_id'
     if (!data.owner_group) data.owner_group = 'user_id'
     let results = await super.create(data, params)
+    if (results.instance) results.instance = results.instance?.buffer
+    if (results.dashboard) results.dashboard = results.dashboard?.buffer
     return results
   }
 
@@ -46,6 +48,8 @@ export class Types extends Service {
       let mongoClient = this.app.get('mongooseClient').connection.client
       await mongoClient.db().collection('types/' + old.slug).rename('types/' + results.slug)
     }
+    if (results.instance) results.instance = results.instance?.buffer
+    if (results.dashboard) results.dashboard = results.dashboard?.buffer
     return results
   }
 
@@ -56,6 +60,8 @@ export class Types extends Service {
       let mongoClient = this.app.get('mongooseClient').connection.client
       await mongoClient.db().collection('types/' + old.slug).rename('types/' + results.slug)
     }
+    if (results.instance) results.instance = results.instance?.buffer
+    if (results.dashboard) results.dashboard = results.dashboard?.buffer
     return results
   }
 
