@@ -3,11 +3,11 @@ export default app => {
   const mongooseClient = app.get('mongooseClient')
   const schema = new mongooseClient.Schema(
     {
-      email: { type: String, unique: true, lowercase: true },
-      password: { type: String },
+      email: { type: String, unique: true, lowercase: true, required: true },
+      password: { type: String, required: true, minLength: 6 },
       locale: { type: String },
       owner_group: { type: String },
-      permissions: { type: Array },
+      permissions: { type: Array, default: ['user'] },
       picture: { type: String },
       googleId: { type: String, unique: true },
       facebookId: { type: String, unique: true },
