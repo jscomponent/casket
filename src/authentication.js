@@ -38,8 +38,6 @@ export default app => {
       return results
     }
     async createEntity(profile, params) {
-      console.log('creating for id', this.entityId)
-      console.log('name', this.name)
       let user = {
         name: profile.name,
         picture: profile.picture,
@@ -49,7 +47,7 @@ export default app => {
         password: crypto.randomBytes(12).toString('hex'),
         permissions: ['user']
       }
-      user[this.entityId] = profile.sub || profile.id
+      user[this.name + 'Id'] = profile.sub || profile.id
       return app.service('/users').create(user)
     }
     async updateEntity(profile, params) {
