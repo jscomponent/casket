@@ -19,12 +19,6 @@ export default app => {
       if (!entity) return this.createEntity(profile, params)
       return entity
     }
-    async getRedirect(data) {
-      console.log('get redir', data)
-      let results = await super.getRedirect(data)
-      console.log('redir', results)
-      return results
-    }
     async createEntity(profile) {
       let user = {
         name: profile.name,
@@ -38,10 +32,9 @@ export default app => {
       user[this.name + 'Id'] = profile.sub || profile.id
       return app.service('/users').create(user)
     }
-    async authenticate(authentication, params) {
-      let results = await super.authenticate(authentication, params)
-      console.log('authenticate', results)
-      return results
+    async updateEntity(profile, params) {
+      delete profile.email
+      return super.updateEntity(profile, params)
     }
   }
   
