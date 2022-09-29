@@ -3,9 +3,9 @@ export default app => {
   const mongooseClient = app.get('mongooseClient')
   const schema = new mongooseClient.Schema(
     {
-      email: { type: String, unique: true, lowercase: true, index: true, sparse: true },
+      email: { type: String, lowercase: true, index: true, unique: true, sparse: true },
       email_verified: { type: Boolean, default: false },
-      password: { type: String/*, required: true, minLength: 6*/ },
+      password: { type: String, required: true, minLength: 6 },
       locale: { type: String },
       owner_group: { type: String },
       permissions: { type: Array, default: ['user'] },
