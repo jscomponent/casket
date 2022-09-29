@@ -20,7 +20,7 @@ export default app => {
       if (!entity) {
         if (profile.email) {
           let users = await app.service('/users').find({ query: { email: profile.email } })
-          users.data.forEach(entity => {
+          for await (let entity of users.data) {
             if (!entity[this.name + 'Id']) {
               let user = {}
               user[this.name + 'Id'] = profile.sub || profile.id
@@ -28,11 +28,13 @@ export default app => {
               if (!user.picture) user.picture = profile.picture
               if (!user.email_verified) user.email_verified = profile.email_verified
               if (!user.locale) user.locale = profile.locale
-              return app.service('/users').patch(entity._id, user)
+              await app.service('/users').patch(entity._id, user)
+              return super.findEntity(profile, params)
             }
-          })
+          }
         }
-        return this.createEntity(profile, params)
+        await this.createEntity(profile, params)
+        return super.findEntity(profile, params)
       }
       return entity
     }
