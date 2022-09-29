@@ -14,21 +14,29 @@ export default app => {
   }
   
   class OAuthAutoRegisterStrategy extends OAuthStrategy {
+
     async findEntity(profile, params) {
       let entity = await super.findEntity(profile, params)
-      console.log('found entity?', entity)
-      console.log('params', params)
-      if (!entity) return this.createEntity(profile, params)
+      if (!entity) {
+        if (profile.email) {
+          let users = await app.service('/users').find({ query: { email: profile.email } })
+          if (users?.data?.length) {
+            entity = users.data[0]
+            let user = {}
+            user[this.name + 'Id'] = profile.sub || profile.id
+            if (!user.name) user.name = profile.name
+            if (!user.picture) user.picture = profile.picture
+            if (!user.email_verified) user.email_verified = profile.email_verified
+            if (!user.locale) user.locale = profile.locale
+            return app.service('/users').patch(entity._id, user)
+          }
+        }
+        return this.createEntity(profile, params)
+      }
       return entity
     }
-    async getRedirect(data) {
-      console.log('get redir', data)
-      let results = await super.getRedirect(data)
-      console.log('redir', results)
-      return results
-    }
+
     async createEntity(profile) {
-      console.log('creating new entity')
       let user = {
         name: profile.name,
         picture: profile.picture,
@@ -41,16 +49,7 @@ export default app => {
       user[this.name + 'Id'] = profile.sub || profile.id
       return app.service('/users').create(user)
     }
-    async updateEntity(profile, params) {
-      let results = await super.updateEntity(profile, params)
-      console.log('updateEntity', results)
-      return results
-    }
-    async authenticate(authentication, params) {
-      let results = await super.authenticate(authentication, params)
-      console.log('authenticate', results)
-      return results
-    }
+
   }
   
   class GithubStrategy extends OAuthAutoRegisterStrategy {
@@ -84,11 +83,7 @@ export default app => {
   
   class GoogleStrategy extends OAuthAutoRegisterStrategy {
     async getEntityData(profile) {
-      console.log('got profile')
-      console.log(profile)
-      console.log('getting entity data')
       const base = await super.getEntityData(profile)
-      console.log(base)
       return {
         ...base,
         name: profile.name,
