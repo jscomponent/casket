@@ -10,9 +10,9 @@ export default app => {
       owner_group: { type: String },
       permissions: { type: Array, default: ['user'] },
       picture: { type: String },
-      googleId: { type: String, trim: true, index: true/*, unique: true*/, sparse: true },
-      facebookId: { type: String, trim: true, index: true/*, unique: true*/, sparse: true },
-      githubId: { type: String, trim: true, index: true/*, unique: true*/, sparse: true }
+      googleId: { type: String, trim: true, index: true, unique: true, sparse: true },
+      facebookId: { type: String, trim: true, index: true, unique: true, sparse: true },
+      githubId: { type: String, trim: true, index: true, unique: true, sparse: true }
     },
     {
       timestamps: true
