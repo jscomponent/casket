@@ -29,7 +29,7 @@ class AnonymousStrategy extends AuthenticationBaseStrategy {
 class OAuthAutoRegisterStrategy extends OAuthStrategy {
   async findEntity(profile, params) {
     console.log('find entity for entityId', this.entityId)
-    let entity = await this.findEntity(profile, params)
+    let entity = await super.findEntity(profile, params)
     console.log('found?', entity ? 'yes' : 'no')
     console.log('email?', profile.email)
     if (!entity && profile.email) {
