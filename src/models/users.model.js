@@ -7,7 +7,11 @@ export default app => {
       password: { type: String },
       locale: { type: String },
       owner_group: { type: String },
-      permissions: { type: Array }
+      permissions: { type: Array },
+      picture: { type: String },
+      googleId: { type: String, unique: true },
+      facebookId: { type: String, unique: true },
+      githubId: { type: String, unique: true }
     },
     {
       timestamps: true

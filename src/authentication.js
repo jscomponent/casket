@@ -48,7 +48,8 @@ class GithubStrategy extends OAuthStrategy {
     return {
       ...baseData,
       name:  profile.name,
-      email: profile.email
+      email: profile.email,
+      picture: profile.avatar_url
     }
   }
 }
@@ -56,10 +57,12 @@ class GithubStrategy extends OAuthStrategy {
 class GoogleStrategy extends OAuthStrategy {
   async getEntityData(profile) {
     const base = await super.getEntityData(profile)
+    console.log('google profile', profile)
     return {
       ...base,
-      profilePicture: profile.picture,
-      email: profile.email
+      name: profile.name,
+      email: profile.email,
+      picture: profile.picture
     }
   }
 }
@@ -82,7 +85,8 @@ class FacebookStrategy extends OAuthStrategy {
     return {
       ...baseData,
       name:  profile.name,
-      email: profile.email
+      email: profile.email,
+      picture: profile.picture?.data?.url
     }
   }
 }
