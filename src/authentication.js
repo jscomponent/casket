@@ -24,10 +24,10 @@ export default app => {
             if (!entity[this.name + 'Id']) {
               let user = {}
               user[this.name + 'Id'] = profile.sub || profile.id
-              if (!user.name) user.name = profile.name
-              if (!user.picture) user.picture = profile.picture
-              if (!user.email_verified) user.email_verified = profile.email_verified
-              if (!user.locale) user.locale = profile.locale
+              if (!entity.name) user.name = profile.name
+              if (!entity.picture) user.picture = profile.picture
+              if (!entity.email_verified) user.email_verified = profile.email_verified
+              if (!entity.locale) user.locale = profile.locale
               await app.service('/users').patch(entity._id, user)
               return super.findEntity(profile, params)
             }
