@@ -16,10 +16,18 @@ export default app => {
   class OAuthAutoRegisterStrategy extends OAuthStrategy {
     async findEntity(profile, params) {
       let entity = await super.findEntity(profile, params)
+      console.log('found entity?', entity)
       if (!entity) return this.createEntity(profile, params)
       return entity
     }
+    async getRedirect(data) {
+      console.log('get redir', data)
+      let results = await super.getRedirect(data)
+      console.log('redir', results)
+      return results
+    }
     async createEntity(profile) {
+      console.log('creating new entity')
       let user = {
         name: profile.name,
         picture: profile.picture,
@@ -33,8 +41,14 @@ export default app => {
       return app.service('/users').create(user)
     }
     async updateEntity(profile, params) {
-      delete profile.email
-      return super.updateEntity(profile, params)
+      let results = await super.updateEntity(profile, params)
+      console.log('updateEntity', results)
+      return results
+    }
+    async authenticate(authentication, params) {
+      let results = await super.authenticate(authentication, params)
+      console.log('authenticate', results)
+      return results
     }
   }
   
