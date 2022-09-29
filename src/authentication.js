@@ -105,6 +105,7 @@ export default app => {
           fields: 'id,name,email,picture'
         }
       })
+      data.picture = data.picture?.data?.url
       return data
     }
     async getEntityData(profile) {
@@ -113,7 +114,7 @@ export default app => {
         ...baseData,
         name:  profile.name,
         email: profile.email,
-        picture: profile.picture?.data?.url
+        picture: profile.picture
       }
     }
   }
