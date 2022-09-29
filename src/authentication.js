@@ -17,12 +17,16 @@ export default app => {
     async findEntity(profile, params) {
       let entity = await super.findEntity(profile, params)
       console.log('found entity?', entity)
+      console.log('params', params)
       if (!entity) {
+        return super.createEntity(profile, params)
+        /*
         try {
           return this.createEntity(profile, params)
         } catch(e) {
           return super.createEntity(profile, params)
         }
+        */
       }
       return entity
     }
