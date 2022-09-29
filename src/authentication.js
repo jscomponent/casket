@@ -18,121 +18,130 @@ export default app => {
 
   app.use('/authentication', authentication)
   app.configure(oauth())
-}
 
-class AnonymousStrategy extends AuthenticationBaseStrategy {
-  async authenticate(authentication, params) {
-    return { anonymous: true }
-  }
-}
-
-class OAuthAutoRegisterStrategy extends OAuthStrategy {
-  async findEntity(profile, params) {
-    console.log('find entity for entityId', this.entityId)
-    let entity = await super.findEntity(profile, params)
-    console.log('found?', entity ? 'yes' : 'no')
-    console.log('email?', profile.email)
-    if (!entity && profile.email) {
-      profile.password = crypto.randomBytes(12).toString('hex')
-      console.log('Creating new account', profile)
-      return this.createEntity(profile, params)
+  class AnonymousStrategy extends AuthenticationBaseStrategy {
+    async authenticate(authentication, params) {
+      return { anonymous: true }
     }
-    return entity
   }
-  async getEntityQuery(profile, params) {
-    let results = await super.getEntityQuery(profile, params)
-    console.log('getEntityQuery', results)
-    return results
-  }
-  async getRedirect(data) {
-    console.log('get redir', data)
-    let results = await super.getRedirect(data)
-    console.log('redir', results)
-    return results
-  }
-  async createEntity(profile, params) {
-    console.log('creating', params)
-    let results = await super.createEntity(profile, params)
-    console.log('createEntity', results)
-    return results
-  }
-  async updateEntity(profile, params) {
-    let results = await super.updateEntity(profile, params)
-    console.log('updateEntity', results)
-    return results
-  }
-  async authenticate(authentication, params) {
-    let results = await super.authenticate(authentication, params)
-    console.log('authenticate', results)
-    return results
-  }
-}
-
-class GithubStrategy extends OAuthAutoRegisterStrategy {
-  async getProfile (authResult) {
-    const accessToken = authResult.access_token
-    let user = await axios.get('https://api.github.com/user', {
-      headers: {
-        authorization: `Bearer ${accessToken}`
+  
+  class OAuthAutoRegisterStrategy extends OAuthStrategy {
+    async findEntity(profile, params) {
+      console.log('find entity for entityId', this.entityId)
+      let entity = await super.findEntity(profile, params)
+      console.log('new entityId', this.entityId)
+      console.log('found?', entity ? 'yes' : 'no')
+      console.log('email?', profile.email)
+      if (!entity && profile.email) {
+        console.log('Creating new account', profile)
+        return this.createEntity(profile, params)
       }
-    })
-    if (!user?.data?.email) {
-      let emails = await axios.get('https://api.github.com/user/emails', {
+      return entity
+    }
+    async getEntityQuery(profile, params) {
+      let results = await super.getEntityQuery(profile, params)
+      console.log('getEntityQuery', results)
+      return results
+    }
+    async getRedirect(data) {
+      console.log('get redir', data)
+      let results = await super.getRedirect(data)
+      console.log('redir', results)
+      return results
+    }
+    async createEntity(profile, params) {
+      console.log('creating for id', this.entityId)
+      console.log('name', this.name)
+      let user = {
+        name: profile.name,
+        picture: profile.picture,
+        email: profile.email,
+        email_verified: profile.email_verified,
+        locale: profile.locale,
+        password: crypto.randomBytes(12).toString('hex'),
+        permissions: ['user']
+      }
+      user[this.entityId] = profile.sub || profile.id
+      return app.service('/users').create(user)
+    }
+    async updateEntity(profile, params) {
+      let results = await super.updateEntity(profile, params)
+      console.log('updateEntity', results)
+      return results
+    }
+    async authenticate(authentication, params) {
+      let results = await super.authenticate(authentication, params)
+      console.log('authenticate', results)
+      return results
+    }
+  }
+  
+  class GithubStrategy extends OAuthAutoRegisterStrategy {
+    async getProfile (authResult) {
+      const accessToken = authResult.access_token
+      let user = await axios.get('https://api.github.com/user', {
         headers: {
           authorization: `Bearer ${accessToken}`
         }
       })
-      if (emails.data.length) user.data.email =  emails.data[0]?.email
-    }
-    return user.data
-  }
-  async getEntityData(profile) {
-    const baseData = await super.getEntityData(profile)
-    return {
-      ...baseData,
-      name:  profile.name,
-      email: profile.email,
-      picture: profile.avatar_url
-    }
-  }
-}
-
-class GoogleStrategy extends OAuthAutoRegisterStrategy {
-  async getEntityData(profile) {
-    console.log('got profile')
-    console.log(profile)
-    console.log('getting entity data')
-    const base = await super.getEntityData(profile)
-    console.log(base)
-    return {
-      ...base,
-      name: profile.name,
-      email: profile.email,
-      picture: profile.picture
-    }
-  }
-}
-
-class FacebookStrategy extends OAuthAutoRegisterStrategy {
-  async getProfile (authResult) {
-    const accessToken = authResult.access_token
-    const { data } = await axios.get('https://graph.facebook.com/me', {
-      headers: {
-        authorization: `Bearer ${accessToken}`
-      },
-      params: {
-        fields: 'id,name,email,picture'
+      if (!user?.data?.email) {
+        let emails = await axios.get('https://api.github.com/user/emails', {
+          headers: {
+            authorization: `Bearer ${accessToken}`
+          }
+        })
+        if (emails.data.length) user.data.email =  emails.data[0]?.email
       }
-    })
-    return data
+      return user.data
+    }
+    async getEntityData(profile) {
+      const baseData = await super.getEntityData(profile)
+      return {
+        ...baseData,
+        name:  profile.name,
+        email: profile.email,
+        picture: profile.avatar_url
+      }
+    }
   }
-  async getEntityData(profile) {
-    const baseData = await super.getEntityData(profile)
-    return {
-      ...baseData,
-      name:  profile.name,
-      email: profile.email,
-      picture: profile.picture?.data?.url
+  
+  class GoogleStrategy extends OAuthAutoRegisterStrategy {
+    async getEntityData(profile) {
+      console.log('got profile')
+      console.log(profile)
+      console.log('getting entity data')
+      const base = await super.getEntityData(profile)
+      console.log(base)
+      return {
+        ...base,
+        name: profile.name,
+        email: profile.email,
+        picture: profile.picture
+      }
+    }
+  }
+  
+  class FacebookStrategy extends OAuthAutoRegisterStrategy {
+    async getProfile (authResult) {
+      const accessToken = authResult.access_token
+      const { data } = await axios.get('https://graph.facebook.com/me', {
+        headers: {
+          authorization: `Bearer ${accessToken}`
+        },
+        params: {
+          fields: 'id,name,email,picture'
+        }
+      })
+      return data
+    }
+    async getEntityData(profile) {
+      const baseData = await super.getEntityData(profile)
+      return {
+        ...baseData,
+        name:  profile.name,
+        email: profile.email,
+        picture: profile.picture?.data?.url
+      }
     }
   }
 }
