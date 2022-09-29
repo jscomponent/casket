@@ -7,18 +7,6 @@ import crypto from 'crypto'
 export default app => {
   const authentication = new AuthenticationService(app)
 
-  authentication.register('jwt', new JWTStrategy())
-  authentication.register('local', new LocalStrategy())
-  authentication.register('anonymous', new AnonymousStrategy())
-  authentication.register('google', new GoogleStrategy())
-  authentication.register('facebook', new FacebookStrategy())
-  authentication.register('github', new GithubStrategy())
-
-  app.set('oauth', oauth)
-
-  app.use('/authentication', authentication)
-  app.configure(oauth())
-
   class AnonymousStrategy extends AuthenticationBaseStrategy {
     async authenticate(authentication, params) {
       return { anonymous: true }
@@ -144,4 +132,16 @@ export default app => {
       }
     }
   }
+
+  authentication.register('jwt', new JWTStrategy())
+  authentication.register('local', new LocalStrategy())
+  authentication.register('anonymous', new AnonymousStrategy())
+  authentication.register('google', new GoogleStrategy())
+  authentication.register('facebook', new FacebookStrategy())
+  authentication.register('github', new GithubStrategy())
+
+  app.set('oauth', oauth)
+
+  app.use('/authentication', authentication)
+  app.configure(oauth())
 }
