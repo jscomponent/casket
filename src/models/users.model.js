@@ -5,7 +5,7 @@ export default app => {
     {
       email: { type: String, unique: true, lowercase: true, index: true, sparse: true },
       email_verified: { type: Boolean, default: false },
-      password: { type: String, required: true, minLength: 6 },
+      password: { type: String/*, required: true, minLength: 6*/ },
       locale: { type: String },
       owner_group: { type: String },
       permissions: { type: Array, default: ['user'] },

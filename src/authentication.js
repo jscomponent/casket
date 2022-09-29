@@ -35,7 +35,7 @@ export default app => {
       let results = await super.getRedirect(data)
       console.log('redir', results)
       return results
-    }
+    }/*
     async createEntity(profile) {
       console.log('creating new entity')
       let user = {
@@ -49,7 +49,7 @@ export default app => {
       }
       user[this.name + 'Id'] = profile.sub || profile.id
       return app.service('/users').create(user)
-    }
+    }*/
     async updateEntity(profile, params) {
       let results = await super.updateEntity(profile, params)
       console.log('updateEntity', results)
