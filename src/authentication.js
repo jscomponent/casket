@@ -17,7 +17,13 @@ export default app => {
     async findEntity(profile, params) {
       let entity = await super.findEntity(profile, params)
       console.log('found entity?', entity)
-      if (!entity) return this.createEntity(profile, params)
+      if (!entity) {
+        try {
+          return this.createEntity(profile, params)
+        } catch(e) {
+          return super.createEntity(profile, params)
+        }
+      }
       return entity
     }
     async getRedirect(data) {
