@@ -4,6 +4,7 @@ export default app => {
   const schema = new mongooseClient.Schema(
     {
       email: { type: String, unique: true, lowercase: true, required: true },
+      email_verified: { type: Boolean, default: false },
       password: { type: String, required: true, minLength: 6 },
       locale: { type: String },
       owner_group: { type: String },

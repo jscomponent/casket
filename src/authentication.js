@@ -29,13 +29,13 @@ class AnonymousStrategy extends AuthenticationBaseStrategy {
 class OAuthAutoRegisterStrategy extends OAuthStrategy {
   async findEntity(profile, params) {
     console.log('find entity for entityId', this.entityId)
-    let entity = await super.findEntity(profile, params)
+    let entity = await this.findEntity(profile, params)
     console.log('found?', entity ? 'yes' : 'no')
     console.log('email?', profile.email)
     if (!entity && profile.email) {
       profile.password = crypto.randomBytes(12).toString('hex')
       console.log('Creating new account', profile)
-      return super.createEntity(profile, params)
+      return this.createEntity(profile, params)
     }
     return entity
   }
@@ -46,11 +46,12 @@ class OAuthAutoRegisterStrategy extends OAuthStrategy {
   }
   async getRedirect(data) {
     console.log('get redir', data)
-    let results = super.getRedirect(data)
+    let results = await super.getRedirect(data)
     console.log('redir', results)
     return results
   }
   async createEntity(profile, params) {
+    console.log('creating', params)
     let results = await super.createEntity(profile, params)
     console.log('createEntity', results)
     return results
