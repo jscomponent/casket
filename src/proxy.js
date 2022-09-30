@@ -102,7 +102,7 @@ export default (app) => {
                 console.log('err', err)
             })
         })
-    }).listen(process.env.proxyport || 80, console.log('Proxy listening on http://localhost:' + process.env.proxyport || 80))
+    }).listen(process.env.proxyport || 80, console.log('Proxy listening on http://localhost:' + (process.env.proxyport || 80)))
 
     https.createServer({
         SNICallback(domain, cb) {
