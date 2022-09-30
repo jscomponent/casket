@@ -4,7 +4,7 @@ import { oauth, OAuthStrategy } from '@feathersjs/authentication-oauth'
 import axios from 'axios'
 import crypto from 'crypto'
 
-export default app => {
+export default async app => {
   const authentication = new AuthenticationService(app)
 
   class AnonymousStrategy extends AuthenticationBaseStrategy {
@@ -127,6 +127,8 @@ export default app => {
   authentication.register('google', new GoogleStrategy())
   authentication.register('facebook', new FacebookStrategy())
   authentication.register('github', new GithubStrategy())
+
+  if (app.lookup('/authentication')) await app.unuse('/authentication')
 
   app.set('oauth', oauth)
 
