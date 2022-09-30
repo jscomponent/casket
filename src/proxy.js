@@ -20,7 +20,7 @@ export default (app) => {
     wellknown.use((req, res, next) => {
         let domain = req.headers.host
         let host = domain.split(':')[0]
-        if (host.startsWith('www.')) host = host.replace('www.', '')
+        // if (host.startsWith('www.')) host = host.replace('www.', '')
         if (req.path?.startsWith('/.well-known')) {
             return res.sendFile(path.resolve('../casket_volume/domains/' + host + req.path))
         }
@@ -106,7 +106,7 @@ export default (app) => {
 
     https.createServer({
         SNICallback(domain, cb) {
-            if (domain.startsWith('www.')) domain = domain.replace('www.', '')
+            // if (domain.startsWith('www.')) domain = domain.replace('www.', '')
             let ctx = null
             if (fs.existsSync(path.resolve('../casket_volume/domains/' + domain + '/fullchain.pem'))) {
                 ctx = tls.createSecureContext({
