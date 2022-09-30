@@ -71,6 +71,10 @@ export default (app) => {
     let router = async (req) => {
         // @todo - Fix so router handles ip adresses 
         let domain = req.headers.host
+        if (!domain) {
+            console.log('router called without domain', req.headers)
+            return { host: 'localhost', port: 8003 }
+        }
         let host = domain.split(':')[0]
         let domains = await sites()
         let route = null
