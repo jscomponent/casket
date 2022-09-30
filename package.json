@@ -21,8 +21,7 @@
     "config": "config/"
   },
   "engines": {
-    "node": "^16.0.0",
-    "npm": ">= 3.0.0"
+    "node": ">= 18"
   },
   "scripts": {
     "test": "npm run lint && NODE_OPTIONS=--experimental-vm-modules npm run jest",
