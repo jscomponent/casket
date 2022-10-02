@@ -4,7 +4,7 @@ import hooks from './users.hooks.js'
 
 export default app => {
   const options = {
-    whitelist: [ '$regex', '$search' ],
+    whitelist: [ '$regex', '$search', '$options' ],
     Model: createModel(app),
     paginate: app.get('paginate')
   }
