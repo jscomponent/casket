@@ -54,24 +54,15 @@ export default async app => {
     }
 
     async getAllowedOrigin (params) {
-
       let config = app.get('authentication')
       let origins = config?.oauth?.origins
-
-      console.log('params', params)
-      console.log('origins', origins)
-
       if (Array.isArray(origins)) {
         const origin = params?.query?.origin || ''
-        console.log('origin', origin)
         const allowedOrigin = origins.find(current => origin.toLowerCase() === current.toLowerCase())
-        console.log('allowedOrigin', allowedOrigin)
         if (!allowedOrigin) return super.getAllowedOrigin(params)
         return allowedOrigin
       }
-      
       return super.getAllowedOrigin(params)
-
     }
 
   }
