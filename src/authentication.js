@@ -55,24 +55,13 @@ export default async app => {
 
     async getAllowedOrigin (params) {
 
-      console.log('get allowed origin', params)
-
       let config = app.get('authentication')
       let origins = config?.oauth?.origins
 
-      console.log('origins', origins)
-
       if (Array.isArray(origins)) {
-        const redirect = params.redirect || ''
-        const allowedOrigin = origins.find(current => redirect.toLowerCase().startsWith(current.toLowerCase()))
-  
-        if (!allowedOrigin) {
-          console.log(`Redirect "${redirect || '[param not available]'}" not allowed.`)
-          return super.getAllowedOrigin(params)
-        }
-
-        console.log('allowed ' + allowedOrigin)
-  
+        const origin = params.origin || ''
+        const allowedOrigin = origins.find(current => origin.toLowerCase() === current.toLowerCase())
+        if (!allowedOrigin) return super.getAllowedOrigin(params)
         return allowedOrigin
       }
       
