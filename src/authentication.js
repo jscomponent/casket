@@ -53,6 +53,24 @@ export default async app => {
       return app.service('/users').create(user)
     }
 
+    async getRedirect(data, params) {
+      const redirectUrl = (params && params.redirect) || '/'
+      const { redirect } = this.authentication.configuration.oauth
+  
+      if (!redirect) return null
+  
+      if (!redirect.some(url => redirectUrl.startsWith(url))) {
+        throw new Error('Invalid redirect URL')
+      }
+  
+      const authResult = data
+      const query = authResult.accessToken ? { access_token: authResult.accessToken } : {
+        error: data.message || 'OAuth Authentication not successful'
+      }
+  
+      return `${redirectUrl}#${querystring.stringify(query)}`
+    }
+
   }
   
   class GithubStrategy extends OAuthAutoRegisterStrategy {
