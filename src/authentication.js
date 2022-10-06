@@ -62,7 +62,7 @@ export default async app => {
       console.log('origins', origins)
 
       if (Array.isArray(origins)) {
-        const origin = params.origin || ''
+        const origin = params?.query?.origin || ''
         console.log('origin', origin)
         const allowedOrigin = origins.find(current => origin.toLowerCase() === current.toLowerCase())
         console.log('allowedOrigin', allowedOrigin)
