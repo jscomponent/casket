@@ -58,6 +58,7 @@ export default async app => {
       let config = app.get('authentication')
       let origins = config?.oauth?.origins
 
+      console.log('params', params)
       console.log('origins', origins)
 
       if (Array.isArray(origins)) {
