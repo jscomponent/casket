@@ -58,9 +58,13 @@ export default async app => {
       let config = app.get('authentication')
       let origins = config?.oauth?.origins
 
+      console.log('origins', origins)
+
       if (Array.isArray(origins)) {
         const origin = params.origin || ''
+        console.log('origin', origin)
         const allowedOrigin = origins.find(current => origin.toLowerCase() === current.toLowerCase())
+        console.log('allowedOrigin', allowedOrigin)
         if (!allowedOrigin) return super.getAllowedOrigin(params)
         return allowedOrigin
       }
