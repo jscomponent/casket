@@ -12,7 +12,8 @@ export default app => {
       picture: { type: String },
       googleId: { type: String, trim: true, index: true, unique: true, sparse: true },
       facebookId: { type: String, trim: true, index: true, unique: true, sparse: true },
-      githubId: { type: String, trim: true, index: true, unique: true, sparse: true }
+      githubId: { type: String, trim: true, index: true, unique: true, sparse: true },
+      meta: { type: Object }
     },
     {
       timestamps: true
