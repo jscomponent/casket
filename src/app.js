@@ -4,6 +4,8 @@ import compress from 'compression'
 import helmet from 'helmet'
 import tarfs from 'tar-fs'
 import tarstream from 'tar-stream'
+import git from 'isomorphic-git'
+import githttp from 'isomorphic-git/http/node'
 import cors from 'cors'
 import logger from './logger.js'
 import feathers from '@feathersjs/feathers'
@@ -28,6 +30,8 @@ app.configure(configuration())
 app.set('mongodb', process.env.mongodb)
 app.set('etag', false)
 app.set('letsencrypt', letsencrypt)
+app.set('git', git)
+app.set('git-http', githttp)
 app.set('tar', tarfs)
 app.set('tar-fs', tarfs)
 app.set('tar-stream', tarstream)

@@ -76,6 +76,7 @@
     "googleapis": "^105.0.0",
     "helmet": "^5.1.0",
     "http-proxy": "github:TeraLogics/node-http-proxy#02c906f6c57071182846189bf06102d2a017572f",
+    "isomorphic-git": "^1.21.0",
     "moment": "^2.29.4",
     "mongodb": "^4.6.0",
     "mongodb-core": "^3.2.7",
