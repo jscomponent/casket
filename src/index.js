@@ -31,6 +31,7 @@ if (!cluster.isPrimary || cpus <= 1) {
 } else {
 
   initialize(app)
+  
   for (let i = 0; i < cpus; i++) {
     cluster.fork()
   }
