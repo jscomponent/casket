@@ -61,6 +61,7 @@ export class Settings {
     if (!data.mongodb && status === 'setup') return 'mongo-connection-url-required'
     if (data.mongodb) {
       try {
+        mongoose.set('strictQuery', false)
         await mongoose.connect(data.mongodb)
         let env = ''
         // eslint-disable-next-line no-empty

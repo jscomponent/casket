@@ -56,6 +56,7 @@ export default (app) => {
 
     let sites = async () => {
         if (process.env.mongodb) {
+            mongoose.set('strictQuery', false)
             await mongoose.connect(process.env.mongodb)
             let domain = mongoose.models['types/domains'] || mongoose.model('types/domains', {
                 match: { type: String },
