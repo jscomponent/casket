@@ -18,6 +18,7 @@ import appHooks from './app.hooks.js'
 import mongoose from './mongoose.js'
 import settings from './services/settings/settings.service.js'
 import letsencrypt from './letsencrypt.js'
+import mongodbsnapshot from 'mongodb-snapshot'
 
 const app = express(feathers())
 
@@ -35,6 +36,7 @@ app.set('git-http', githttp)
 app.set('tar', tarfs)
 app.set('tar-fs', tarfs)
 app.set('tar-stream', tarstream)
+app.set('mongodb-snapshot', mongodbsnapshot)
 
 app.use(helmet({ contentSecurityPolicy: false }))
 app.use(cors())
