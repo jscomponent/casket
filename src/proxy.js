@@ -92,7 +92,8 @@ export default (app) => {
     http.createServer(async (req, res) => {
         let target = await router(req)
         if (target.secure) {
-            return res.redirect('https://' + req.headers.host + req.url)
+            res.writeHead(301, {Location: `https://${req.headers.host}${req.url}`})
+            res.end()
         }
         proxy.web(req, res, { target }, e => {
             proxy.web(req, res, { target: { host: 'localhost', port: 8001 } }, err => {
