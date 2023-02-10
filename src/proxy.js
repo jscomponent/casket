@@ -62,7 +62,8 @@ export default (app) => {
                 match: { type: String },
                 host: { type: String },
                 port: { type: Number },
-                secure: { type: Boolean }
+                secure: { type: Boolean },
+                redirect: { type: String }
             })
             return await domain.find()
         }
@@ -70,27 +71,49 @@ export default (app) => {
     }
 
     let router = async (req) => {
-        // @todo - Fix so router handles ip adresses 
         let domain = req.headers.host
         if (!domain) {
             console.log('router called without domain', req.headers)
-            return { host: 'localhost', port: 8003 }
+            return {
+                host: 'localhost',
+                port: 8003
+            }
         }
         let host = domain.split(':')[0]
         let domains = await sites()
         let route = null
         let path = url.parse(req.url, true).pathname
-        if (path.startsWith('/.well-known')) return { host: 'localhost', port: 8003 }
-        if (host.startsWith('hub.')) return { host: 'localhost', port: process.env.port }
+        if (path.startsWith('/.well-known')) return {
+            host: 'localhost',
+            port: 8003
+        }
+        if (host.startsWith('hub.')) return {
+            host: 'localhost',
+            port: process.env.port
+        }
         domains.forEach(site => {
-            if (host === site.match) route = { host: site.host || 'localhost', port: site.port, secure: site?.secure }
-            else if (site.match === '*' && !route) route = { host: site.host || 'localhost', port: site.port, secure: site?.secure }
+            if (host === site?.match) route = {
+                host: site?.host || 'localhost',
+                port: site?.port,
+                secure: site?.secure,
+                redirect: site?.redirect
+            }
+            else if (site?.match === '*' && !route) route = {
+                host: site?.host || 'localhost',
+                port: site?.port,
+                secure: site?.secure,
+                redirect: site?.redirect
+            }
         })
         return route || { host: 'localhost', port: process.env.port, secure: false }
     }
 
     http.createServer(async (req, res) => {
         let target = await router(req)
+        if (target.redirect) {
+            res.writeHead(301, {Location: target.redirect})
+            res.end()
+        }
         if (target.secure) {
             res.writeHead(301, {Location: `https://${req.headers.host}${req.url}`})
             res.end()
@@ -129,6 +152,10 @@ export default (app) => {
         cert: fs.readFileSync(path.resolve('./server.crt'), 'ascii')     
     }, async (req, res) => {
         let target = await router(req)
+        if (target.redirect) {
+            res.writeHead(301, {Location: target.redirect})
+            res.end()
+        }
         proxy.web(req, res, { target }, e => {
             proxy.web(req, res, { target: { host: 'localhost', port: 8001 } }, err => {
                 console.log('err', err)
