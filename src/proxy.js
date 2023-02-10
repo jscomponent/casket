@@ -61,7 +61,8 @@ export default (app) => {
             let domain = mongoose.models['types/domains'] || mongoose.model('types/domains', {
                 match: { type: String },
                 host: { type: String },
-                port: { type: Number }
+                port: { type: Number },
+                secure: { type: Boolean }
             })
             return await domain.find()
         }
@@ -82,14 +83,17 @@ export default (app) => {
         if (path.startsWith('/.well-known')) return { host: 'localhost', port: 8003 }
         if (host.startsWith('hub.')) return { host: 'localhost', port: process.env.port }
         domains.forEach(site => {
-            if (host === site.match) route = { host: site.host || 'localhost', port: site.port }
-            else if (site.match === '*' && !route) route = { host: site.host || 'localhost', port: site.port }
+            if (host === site.match) route = { host: site.host || 'localhost', port: site.port, secure: site?.secure }
+            else if (site.match === '*' && !route) route = { host: site.host || 'localhost', port: site.port, secure: site?.secure }
         })
-        return route || { host: 'localhost', port: process.env.port }
+        return route || { host: 'localhost', port: process.env.port, secure: false }
     }
 
     http.createServer(async (req, res) => {
         let target = await router(req)
+        if (target.secure) {
+            return res.redirect('https://' + req.headers.host + req.url)
+        }
         proxy.web(req, res, { target }, e => {
             proxy.web(req, res, { target: { host: 'localhost', port: 8001 } }, err => {
                 console.log('err', err)
