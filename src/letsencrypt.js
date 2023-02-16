@@ -5,7 +5,7 @@ import punycode from 'punycode'
 import CSR from '@root/csr'
 import PEM from '@root/pem/packer.js'
 import path from 'path'
-import { promises as fs } from 'fs'
+import fs from 'fs'
 
 export default async (maintainer = 'webmaster@example.com', domain = 'localhost', production = true) => {
     try {
@@ -19,11 +19,11 @@ export default async (maintainer = 'webmaster@example.com', domain = 'localhost'
         let serverKey = serverKeypair.private
         let serverPem = await Keypairs.export({ jwk: serverKey })
 
-        await fs.mkdir(path.resolve('../casket_volume/domains/' + domain), {recursive: true})
+        fs.mkdirSync(path.resolve('../casket_volume/domains/' + domain), {recursive: true})
         if (fs.existsSync(path.resolve('../casket_volume/domains/' + domain + '/privkey.pem'))) {
             fs.rmSync(path.resolve('../casket_volume/domains/' + domain + '/privkey.pem'))
         }
-        await fs.writeFile(path.resolve('../casket_volume/domains/' + domain + '/privkey.pem'), serverPem, 'ascii')
+        fs.writeFileSync(path.resolve('../casket_volume/domains/' + domain + '/privkey.pem'), serverPem, 'ascii')
 
         let acme = ACME.create({
             maintainerEmail: maintainer,
@@ -76,7 +76,7 @@ export default async (maintainer = 'webmaster@example.com', domain = 'localhost'
         if (fs.existsSync(path.resolve('../casket_volume/domains/' + domain + '/fullchain.pem'))) {
             fs.rmSync(path.resolve('../casket_volume/domains/' + domain + '/fullchain.pem'))
         }
-        await fs.writeFile(path.resolve('../casket_volume/domains/' + domain + '/fullchain.pem'), fullchain, 'ascii')
+        fs.writeFileSync(path.resolve('../casket_volume/domains/' + domain + '/fullchain.pem'), fullchain, 'ascii')
         return true
     } catch (e) {
         console.log('err', e)
