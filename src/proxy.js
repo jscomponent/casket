@@ -115,8 +115,8 @@ export default (app) => {
             res.end()
         }
         if (target.secure) {
-            //res.writeHead(301, {Location: `https://${req.headers.host}${req.url}`})
-            //res.end()
+            res.writeHead(301, {Location: `https://${req.headers.host}${req.url}`})
+            res.end()
         }
         proxy.web(req, res, { target }, e => {
             proxy.web(req, res, { target: { host: 'localhost', port: 8001 } }, err => {
