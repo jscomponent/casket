@@ -95,13 +95,13 @@ export default (app) => {
             if (host === site?.match) route = {
                 host: site?.host || 'localhost',
                 port: site?.port,
-                secure: site?.secure,
+                secure: false, //site?.secure,
                 redirect: site?.redirect
             }
             else if (site?.match === '*' && !route) route = {
                 host: site?.host || 'localhost',
                 port: site?.port,
-                secure: site?.secure,
+                secure: false, //site?.secure,
                 redirect: site?.redirect
             }
         })
