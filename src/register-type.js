@@ -24,8 +24,9 @@ export default async (app, type) => {
   }
   app.use('/types/' + type.slug, service, (req, res, next) => {
     res.set('Cache-Control', 'no-store')
-    for (const header of res?.data?.headers) {
-      res.set(header.key, header.value)
+    let customHeaders = res?.data?.headers || {}
+    for (const key of Object.keys(customHeaders)) {
+      res.set(key, res?.data?.headers[key])
     }
     if (res?.data?.buffer && res?.data?.filename) {
       res.set('Content-Disposition', `attachment; filename="${res?.data?.filename}"`);
