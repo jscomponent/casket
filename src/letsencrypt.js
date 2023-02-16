@@ -20,6 +20,9 @@ export default async (maintainer = 'webmaster@example.com', domain = 'localhost'
         let serverPem = await Keypairs.export({ jwk: serverKey })
 
         await fs.mkdir(path.resolve('../casket_volume/domains/' + domain), {recursive: true})
+        if (fs.existsSync(path.resolve('../casket_volume/domains/' + domain + '/privkey.pem'))) {
+            fs.rmSync(path.resolve('../casket_volume/domains/' + domain + '/privkey.pem'))
+        }
         await fs.writeFile(path.resolve('../casket_volume/domains/' + domain + '/privkey.pem'), serverPem, 'ascii')
 
         let acme = ACME.create({
@@ -70,6 +73,9 @@ export default async (maintainer = 'webmaster@example.com', domain = 'localhost'
         })
 
         let fullchain = pems.cert + '\n' + pems.chain + '\n'
+        if (fs.existsSync(path.resolve('../casket_volume/domains/' + domain + '/fullchain.pem'))) {
+            fs.rmSync(path.resolve('../casket_volume/domains/' + domain + '/fullchain.pem'))
+        }
         await fs.writeFile(path.resolve('../casket_volume/domains/' + domain + '/fullchain.pem'), fullchain, 'ascii')
         return true
     } catch (e) {

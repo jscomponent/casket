@@ -136,10 +136,21 @@ export default (app) => {
         SNICallback(domain, cb) {
             let ctx = null
             if (fs.existsSync(path.resolve('../casket_volume/domains/' + domain + '/fullchain.pem'))) {
-                ctx = tls.createSecureContext({
-                    key: fs.readFileSync(path.resolve('../casket_volume/domains/' + domain + '/privkey.pem'), 'ascii'),
-                    cert: fs.readFileSync(path.resolve('../casket_volume/domains/' + domain + '/fullchain.pem'), 'ascii')
-                })
+                try {
+                    ctx = tls.createSecureContext({
+                        key: fs.readFileSync(path.resolve('../casket_volume/domains/' + domain + '/privkey.pem'), 'ascii'),
+                        cert: fs.readFileSync(path.resolve('../casket_volume/domains/' + domain + '/fullchain.pem'), 'ascii')
+                    })
+                } catch(e) {
+                    fs.rmSync(path.resolve('../casket_volume/domains/' + domain + '/fullchain.pem'))
+                    if (fs.existsSync(path.resolve('../casket_volume/domains/' + domain + '/privkey.pem'))) {
+                        fs.rmSync(path.resolve('../casket_volume/domains/' + domain + '/privkey.pem'))
+                    }
+                    ctx = tls.createSecureContext({
+                        key: fs.readFileSync(path.resolve('./server.key'), 'ascii'),
+                        cert: fs.readFileSync(path.resolve('./server.crt'), 'ascii')    
+                    })
+                }
             } else {
                 ctx = tls.createSecureContext({
                     key: fs.readFileSync(path.resolve('./server.key'), 'ascii'),
