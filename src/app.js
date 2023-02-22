@@ -49,7 +49,7 @@ app.use((req, res, next) => {
   res.header('Cross-Origin-Resource-Policy', 'cross-origin')
   next()
 })
-app.use(favicon(path.resolve('./admin/favicon.svg')))
+app.use(favicon(path.resolve('./admin/favicon.png')))
 app.use('/', express.static(app.get('public')))
 
 app.configure(express.rest())
