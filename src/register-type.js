@@ -34,19 +34,20 @@ export default async (app, type) => {
       res.redirect(res?.data.status, res?.data.redirect)
     } else if (res?.data.redirect) {
       res.redirect(res?.data.redirect)
-    }
-    if (res?.data?.buffer && res?.data?.filename) {
-      if (!customDisposition) res.set('Content-Disposition', `attachment; filename="${res?.data?.filename}"`)
-      res.type(res.data.filename.split('.').pop())
-      res.send(res.data.buffer)
-    } else if (res?.data?.buffer && res?.data['content-type']) {
-      res.set('Content-Type', res.data['content-type'])
-      res.send(res.data.buffer)
-    } else if (res?.data?.buffer) {
-      res.set('Content-Type', res.data['content-type'])
-      res.send(res.data.buffer)
     } else {
-      next()
+      if (res?.data?.buffer && res?.data?.filename) {
+        if (!customDisposition) res.set('Content-Disposition', `attachment; filename="${res?.data?.filename}"`)
+        res.type(res.data.filename.split('.').pop())
+        res.send(res.data.buffer)
+      } else if (res?.data?.buffer && res?.data['content-type']) {
+        res.set('Content-Type', res.data['content-type'])
+        res.send(res.data.buffer)
+      } else if (res?.data?.buffer) {
+        res.set('Content-Type', res.data['content-type'])
+        res.send(res.data.buffer)
+      } else {
+        next()
+      }
     }
   })
   service = app.service('types/' + type.slug)
