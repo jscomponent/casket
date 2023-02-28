@@ -30,6 +30,11 @@ export default async (app, type) => {
       if (key.toLocaleLowerCase() === 'content-disposition') customDisposition = true
       res.set(key, res?.data?.headers[key])
     }
+    if (res?.data.status && res?.data.redirect) {
+      res.redirect(res?.data.status, res?.data.redirect)
+    } else if (res?.data.redirect) {
+      res.redirect(res?.data.redirect)
+    }
     if (res?.data?.buffer && res?.data?.filename) {
       if (!customDisposition) res.set('Content-Disposition', `attachment; filename="${res?.data?.filename}"`)
       res.type(res.data.filename.split('.').pop())
