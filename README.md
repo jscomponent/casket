@@ -6,20 +6,9 @@ systemctl enable docker
 
 > Casket Content Management System - Built on [FeathersJS](https://feathersjs.com) using [MongoDB](https://mongodb.com) with [Mongoose](https://mongoosejs.com) and [Socket.IO](https://socket.io) 🔥
 
-## Motivation
-
-PHP just can't take up the fight against NodeJS anymore, as realtime libraries and other awesome NodeJS packages are spreading around on the internet.
-And coming from a world where WordPress & Laravel have been there for decades, NodeJS is struggling to fill this holes.
-Imagin having an auto scaled real-time CMS up and running in no time with no limitations, all for free written in NodeJS without writing any code. 😵‍💫💥
-NodeJS with feathers have all the pieces needed to make this happen, but the puzzle has not yet been solved. Follow along to see this WIP is beeing transformed to a working CMS ready for production. 🎈
-
-In the future perhaps a replacement for systems such as firebase, strapi & WordPress?
-
-Where not there yet, but it is surely the right time to get started. 💪🏽
-
 ## Getting Started
 
-🆘 Warning! - This project is currently in an experimental state 🛰
+🆘 This project is currently in an early state 🛰
 
 1. Make sure you have git, [NodeJS](https://nodejs.org/) and [npm](https://www.npmjs.com/) installed.
 2. Install pm2
