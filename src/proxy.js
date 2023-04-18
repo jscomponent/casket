@@ -115,7 +115,6 @@ export default (app) => {
             res.end()
         }
         if (target.secure) {
-            res.setHeader('X-Forwarded-Proto', 'https')
             res.writeHead(301, {Location: `https://${req.headers.host}${req.url}`})
             res.end()
         }
@@ -164,6 +163,7 @@ export default (app) => {
         cert: fs.readFileSync(path.resolve('./server.crt'), 'ascii')     
     }, async (req, res) => {
         res.setHeader('X-Forwarded-Proto', 'https')
+        res.setHeader('Forwarded', 'proto=https')
         let target = await router(req)
         if (target.redirect) {
             res.writeHead(301, {Location: target.redirect})
