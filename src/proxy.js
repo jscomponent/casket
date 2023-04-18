@@ -162,6 +162,7 @@ export default (app) => {
         key: fs.readFileSync(path.resolve('./server.key'), 'ascii'),
         cert: fs.readFileSync(path.resolve('./server.crt'), 'ascii')     
     }, async (req, res) => {
+        res.setHeader('X-Forwarded-Proto', 'https')
         let target = await router(req)
         if (target.redirect) {
             res.writeHead(301, {Location: target.redirect})
