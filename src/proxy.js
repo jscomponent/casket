@@ -162,8 +162,6 @@ export default (app) => {
         key: fs.readFileSync(path.resolve('./server.key'), 'ascii'),
         cert: fs.readFileSync(path.resolve('./server.crt'), 'ascii')     
     }, async (req, res) => {
-        res.setHeader('X-Forwarded-Proto', 'https')
-        res.setHeader('Forwarded', 'proto=https')
         req.headers['X-Forwarded-Proto'] = 'https'
         req.headers['Forwarded'] = 'proto=https'
         let target = await router(req)
