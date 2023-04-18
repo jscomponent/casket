@@ -115,6 +115,7 @@ export default (app) => {
             res.end()
         }
         if (target.secure) {
+            res.setHeader('X-Forwarded-Proto', 'https')
             res.writeHead(301, {Location: `https://${req.headers.host}${req.url}`})
             res.end()
         }
