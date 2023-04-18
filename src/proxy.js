@@ -164,6 +164,8 @@ export default (app) => {
     }, async (req, res) => {
         res.setHeader('X-Forwarded-Proto', 'https')
         res.setHeader('Forwarded', 'proto=https')
+        req.headers['X-Forwarded-Proto'] = 'https'
+        req.headers['Forwarded'] = 'proto=https'
         let target = await router(req)
         if (target.redirect) {
             res.writeHead(301, {Location: target.redirect})
