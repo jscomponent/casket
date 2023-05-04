@@ -12,7 +12,6 @@ RUN npm i
 RUN npm i vite -g
 RUN npm i pm2 -g
 RUN npm i pnpm -g
-RUN npm i yarn -g
 RUN npm i forever -g
 # install text editors
 RUN apt-get -y update
