@@ -18,7 +18,7 @@ export default app => {
   }
 
   const options = {
-    whitelist: [ '$regex', '$search', '$options' ],
+    whitelist: [ '$regex', '$search', '$options', '$where', '$function', '$expr' ],
     Model: createModel(app),
     paginate: app.get('paginate')
   }

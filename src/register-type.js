@@ -8,7 +8,7 @@ import checkPermissions from 'feathers-permissions'
 
 export default async (app, type) => {
   if (app.lookup('/types/' + type.slug)) await app.unuse('/types/' + type.slug)
-  let options = {whitelist: [ '$regex', '$search', '$options' ], Model: createModel(app, type), paginate: app.get('paginate')}
+  let options = {whitelist: [ '$regex', '$search', '$options', '$where', '$function', '$expr' ], Model: createModel(app, type), paginate: app.get('paginate')}
   let service = new Service(options, app)
   let instance = type.instance.toString().trim()
   if (instance) {
