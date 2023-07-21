@@ -19,6 +19,7 @@ import mongoose from './mongoose.js'
 import settings from './services/settings/settings.service.js'
 import letsencrypt from './letsencrypt.js'
 import mongodbsnapshot from 'mongodb-snapshot'
+import mongo from 'mongodb'
 
 const app = express(feathers())
 
@@ -31,6 +32,7 @@ app.configure(configuration())
 app.set('mongodb', process.env.mongodb)
 app.set('etag', false)
 app.set('letsencrypt', letsencrypt)
+app.set('mongo', mongo)
 app.set('git', git)
 app.set('git-http', githttp)
 app.set('tar', tarfs)
