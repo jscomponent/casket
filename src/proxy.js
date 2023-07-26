@@ -7,6 +7,7 @@ import url from 'url'
 import httpProxy from 'http-proxy'
 import express from 'express'
 import mongoose from 'mongoose'
+import history from 'connect-history-api-fallback'
 // import compression from 'compression'
 
 export default (app) => {
@@ -31,6 +32,7 @@ export default (app) => {
     let staticserver = express()
 
     // staticserver.use(compression)
+    staticserver.use(history())
 
     staticserver.use((req, res, next) => {
         let domain = req.headers.host
