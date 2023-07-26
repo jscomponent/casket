@@ -7,7 +7,7 @@ import url from 'url'
 import httpProxy from 'http-proxy'
 import express from 'express'
 import mongoose from 'mongoose'
-// import compression from 'compression'
+import compression from 'compression'
 
 export default (app) => {
 
@@ -29,7 +29,22 @@ export default (app) => {
     wellknown.listen(8003)
 
     let staticserver = express()
-    // staticserver.use(compression)
+
+    staticserver.use(compression)
+
+    app.use ((req, res, next) => {
+        let domain = req.headers.host
+        let host = domain.split(':')[0]
+        if (host.startsWith('www.')) host = host.replace('www.', '')
+        if (host) {
+            let middleware = express.static(path.resolve('../casket_volume/sites/' + host + '/public'))
+            middleware(req, res, next)
+        } else {
+            next()
+        }
+    })
+    
+    /*
     staticserver.use((req, res, next) => {
         let domain = req.headers.host
         let host = domain.split(':')[0]
@@ -49,6 +64,8 @@ export default (app) => {
             res.json({ success: false, message: 'Something went wrong', path: p })
         }
     })
+    */
+   
     staticserver.listen(8004)
 
     let proxy = httpProxy.createProxyServer({})
