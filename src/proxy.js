@@ -32,7 +32,7 @@ export default (app) => {
 
     staticserver.use(compression)
 
-    app.use ((req, res, next) => {
+    staticserver.use((req, res, next) => {
         let domain = req.headers.host
         let host = domain.split(':')[0]
         if (host.startsWith('www.')) host = host.replace('www.', '')
@@ -65,7 +65,7 @@ export default (app) => {
         }
     })
     */
-   
+
     staticserver.listen(8004)
 
     let proxy = httpProxy.createProxyServer({})
