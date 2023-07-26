@@ -7,7 +7,7 @@ import url from 'url'
 import httpProxy from 'http-proxy'
 import express from 'express'
 import mongoose from 'mongoose'
-import compression from 'compression'
+// import compression from 'compression'
 
 export default (app) => {
 
@@ -29,7 +29,7 @@ export default (app) => {
     wellknown.listen(8003)
 
     let staticserver = express()
-    staticserver.use(compression)
+    // staticserver.use(compression)
     staticserver.use((req, res, next) => {
         let domain = req.headers.host
         let host = domain.split(':')[0]
