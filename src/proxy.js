@@ -36,7 +36,7 @@ export default (app) => {
 
     staticserver.use((req, res, next) => {
         let domain = req.headers.host
-        res.set('Link', `${req.protocol}://${req.get('host')}${req.originalUrl}; rel=canonical`)
+        res.set('Link', `<${req.protocol}://${req.get('host')}${req.originalUrl}>; rel=canonical`)
         let host = domain.split(':')[0]
         if (host.startsWith('www.')) host = host.replace('www.', '')
         if (host) {
