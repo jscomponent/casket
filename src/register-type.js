@@ -81,9 +81,11 @@ let permissions = (type, method) => {
       let results = await ctx.app.service('types/any').find({ query: { slug: type.slug } })
       ctx.params.typeRoles = results.data[0]?.roles[method] || []
       if (params.provider && ctx.params.typeRoles.includes('anonymous')) {
-        ctx.params = {
-          ...params,
-          authentication: { strategy: 'anonymous' }
+        if (!ctx?.params?.authentication?.strategy) {
+          ctx.params = {
+            ...params,
+            authentication: { strategy: 'anonymous' }
+          }
         }
       }
       return ctx
@@ -110,7 +112,6 @@ let permissions = (type, method) => {
 }
 
 let hooks = type => {
-
   return {
     before: {
       find: [ ...permissions(type, 'find') ],
