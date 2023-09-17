@@ -12,9 +12,11 @@ systemctl enable docker
 NODE_ENV = production # or development
 lang = en, no # de, dk, etc...
 port = 80 # On which port the app should run (should be unique to proxyport, usually 80 if webmaster is false and 8000 if webmaster is true)
+PORT = 90 ## overrides port
+$PORT = 900 ## overrides PORT
 proxyport = 80 # On which port the app runs on 
 proxyportssl = 80
-host = localhost # IP or Hostname where you will access service on the internet
+host = localhost # IP or Hostname where you will access service on the internet. Is this still in use?
 mongodb = mongodb://root:example@mongo:27017/casket?authSource=admin # Add connection string
 redis = redis://redis:6379 # If you are running on a cluster, add redis for shared memory
 webmaster = true # Set to true if you are deploying using docker-compose (npm run build)

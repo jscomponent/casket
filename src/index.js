@@ -11,7 +11,9 @@ if (!cluster.isPrimary || cpus <= 1) {
 
   if (cpus <= 1) initialize(app)
 
-  if (process.env.port) app.set('port', process.env.port)
+  if (process.env.$PORT) app.set('port', process.env.$PORT)
+  else if (process.env.PORT) app.set('port', process.env.PORT)
+  else if (process.env.port) app.set('port', process.env.port)
   const port = app.get('port')
 
   app.listen(port).then(server => {
