@@ -22,7 +22,7 @@ export class Settings {
       // eslint-disable-next-line no-empty
       try { env = fs.readFileSync(path.resolve('./.env'), { encoding: 'utf8' }) } catch (e) {}
       let obj = dotenv.parse(env)
-      if (obj.mongodb) {
+      if (obj.mongodb || process?.env?.mongodb) {
         try {
           let users = await this.app.service('/users').find()
           if (!users?.data?.length) return 'admin-registration'
