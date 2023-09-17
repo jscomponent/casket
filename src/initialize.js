@@ -7,5 +7,8 @@ export default (app) => {
         console.log('Is webmaster')
         proxy(app)
     }
-    autobackup()
+    if (process.env?.autobackup === 'true') {
+        console.log('Auto backup detected')
+        autobackup()
+    }
 }

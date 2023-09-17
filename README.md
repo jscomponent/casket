@@ -6,10 +6,33 @@ systemctl enable docker
 
 > Casket Content Management System - Built on [FeathersJS](https://feathersjs.com) using [MongoDB](https://mongodb.com) with [Mongoose](https://mongoosejs.com) and [Socket.IO](https://socket.io) 🔥
 
+## Environment variables
+
+```bash
+NODE_ENV = production # or development
+lang = en, no # de, dk, etc...
+port = 80 # On which port the app should run (should be unique to proxyport, usually 80 if webmaster is false and 8000 if webmaster is true)
+proxyport = 80 # On which port the app runs on 
+proxyportssl = 80
+host = localhost # IP or Hostname where you will access service on the internet
+mongodb = mongodb://root:example@mongo:27017/casket?authSource=admin # Add connection string
+redis = redis://redis:6379 # If you are running on a cluster, add redis for shared memory
+webmaster = true # Set to true if you are deploying using docker-compose (npm run build)
+autobackup = true # Set to false on ephemeral runners
+```
+
 ## Deploy on Google Cloud Run
 
 1. Fork this project
-2. 
+2. Set the following env variables:
+
+```bash
+NODE_ENV = production
+lang = en, no
+mongodb = # Your Connection String
+```
+
+3. Deploy
 
 ## Getting Started
 

@@ -23,10 +23,12 @@ import { ObjectId } from 'mongodb'
 
 const app = express(feathers())
 
-app.configure(sync({
-  uri: process.env.redis || 'redis://localhost:6379',
-  key: process.env.name || 'feathers-sync'
-}))
+if (process.env?.redis) {
+  app.configure(sync({
+    uri: process.env.redis || 'redis://localhost:6379',
+    key: process.env.name || 'feathers-sync'
+  }))
+}
 
 app.configure(configuration())
 app.set('mongodb', process.env.mongodb)

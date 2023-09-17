@@ -77,17 +77,14 @@ let createModel = (app, type) => {
 let permissions = (type, method) => {
   return [
     async ctx => {
-      const { params } = ctx
-      let results = await ctx.app.service('types/any').find({ query: { slug: type.slug } })
-      ctx.params.typeRoles = results.data[0]?.roles[method] || []
-      if (params.provider && ctx.params.typeRoles.includes('anonymous')) {
-        if (!ctx?.params?.authentication?.strategy) {
-          ctx.params = {
-            ...params,
-            authentication: { strategy: 'anonymous' }
-          }
-        }
+      const { params, app } = ctx
+      let results = await app.service('types/any').find({ query: { slug: type.slug } })
+      params.typeRoles = results?.data?.[0]?.roles[method] || []
+      if (params.typeRoles.includes('anonymous')) {
+        if (!params.typeRoles.includes('user')) params.typeRoles.push('user')
+        if (params?.provider && !params?.authentication?.strategy) params.authentication = { strategy: 'anonymous' }
       }
+      ctx.params = params
       return ctx
     },
     authenticate('jwt', 'anonymous'),
