@@ -6,6 +6,11 @@ systemctl enable docker
 
 > Casket Content Management System - Built on [FeathersJS](https://feathersjs.com) using [MongoDB](https://mongodb.com) with [Mongoose](https://mongoosejs.com) and [Socket.IO](https://socket.io) 🔥
 
+## Deploy on Google Cloud Run
+
+1. Fork this project
+2. 
+
 ## Getting Started
 
 🆘 This project is currently in an early state 🛰
@@ -43,8 +48,7 @@ systemctl enable docker
 - [x] Clustering (Run on multiple cores)
 - [x] Zero downtime (Using pm2 with combination of dynamic services)
 - [x] Support extending class for dynamic services
-- [ ] Graphical design
-- [ ] Media upload (use munter?)
+- [x] Graphical design
 - [ ] Documentation
 
 ## Testing
