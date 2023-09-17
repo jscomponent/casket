@@ -19,6 +19,8 @@ RUN apt-get -y install vim nano
 # copying the source code of Application into the container dir
 COPY . /usr/casket
 RUN rm -f /usr/casket/.env
+# Create empty .env.docker if not exists
+RUN touch /usr/casket/.env.docker
 RUN mv /usr/casket/.env.docker /usr/casket/.env
 # container exposed network port number
 EXPOSE 80 443
