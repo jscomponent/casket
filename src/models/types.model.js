@@ -23,7 +23,7 @@ export default app => {
     mongooseClient.deleteModel(modelName)
   }
   schema.plugin(mongooseIntl, {
-    languages: process.env.lang.split(',').map(l => l.trim()),
+    languages: process.env?.lang?.split(',')?.map(l => l.trim()) || ['en'],
     defaultLanguage: 'en'
   })
   return mongooseClient.model(modelName, schema)
