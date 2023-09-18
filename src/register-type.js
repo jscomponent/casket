@@ -81,7 +81,10 @@ let permissions = (type, method) => {
       let results = await app.service('types/any').find({ query: { slug: type.slug } })
       params.typeRoles = results?.data?.[0]?.roles[method] || []
       if (params.typeRoles.includes('anonymous')) {
-        if (!params.typeRoles.includes('user')) params.typeRoles.push('user')
+        for (const role of params?.user?.permissions || []) {
+          // On anonymous, allow all roles of user to see content if logged in
+          if (!params.typeRoles.includes(role)) params.typeRoles.push(role)
+        }
         if (params?.provider && !params?.authentication?.strategy) params.authentication = { strategy: 'anonymous' }
       }
       ctx.params = params
