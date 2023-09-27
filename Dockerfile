@@ -1,4 +1,4 @@
-FROM node:20.2.0
+FROM node:18.18.0
 
 RUN mkdir -p /usr/casket
 WORKDIR /usr/casket
