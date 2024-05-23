@@ -10,7 +10,7 @@ import mongoose from 'mongoose'
 import history from 'connect-history-api-fallback'
 import compression from 'compression'
 
-export default (app) => {
+export default () => {
 
     let notFound = express()
     notFound.get('/', (req, res) => { res.send('404 Not Found :/') }).listen(8001)
